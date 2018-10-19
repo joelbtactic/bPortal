@@ -28,13 +28,16 @@ virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
 pip install -r suitepy/requirements.txt
-python manage.py migrate
 ```
 
 ### Configuring SuiteCRM server
 Edit conveniently `suitepy/suitepy.ini` file.
 
 Our development environment it's ready. Now we can create an admin account with:
+
+### Initial setup
+
+python manage.py migrate
 
 ### Superuser creation
 
