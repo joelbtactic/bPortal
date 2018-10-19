@@ -18,7 +18,7 @@ sudo apt-get install virtualenv python-pip
 Go to home directory of the virtualserver in which the portal will be installed and clone the repository of bPortal with:
 
 ```bash
-git clone --recursive https://github.com/sanchezfauste/bPortal.git
+git clone --recursive https://github.com/btactic/bPortal.git
 ```
 
 ## Prepare virtual environment
