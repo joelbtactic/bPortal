@@ -14,6 +14,15 @@ It's recommended to use `virtualenv` and `pip` packages to manage Python depende
 sudo apt-get install virtualenv python-pip
 ```
 
+## Clone the repository
+Go to home directory of the virtualserver in which the portal will be installed and clone the repository of bPortal with:
+
+```bash
+git clone --recursive https://github.com/sanchezfauste/bPortal.git
+```
+
+## Prepare virtual environment
+
 Once you have `virtualenv` and `pip` tools ready it's time to prepare the virtual environment to run the application.  
 Following we create a virtual environment and install all Python dependencies:
 
@@ -24,13 +33,6 @@ source env/bin/activate
 pip install -r requirements.txt
 pip install -r suitepy/requirements.txt
 deactivate
-```
-
-## Clone the repository
-Go to home directory of the virtualserver in which the portal will be installed and clone the repository of bPortal with:
-
-```bash
-git clone --recursive https://github.com/sanchezfauste/bPortal.git
 ```
 
 ## Configure bPortal settings
