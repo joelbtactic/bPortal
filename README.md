@@ -35,6 +35,27 @@ Edit conveniently `suitepy/suitepy.ini` file.
 
 Our development environment it's ready. Now we can create an admin account with:
 
+### Setup Database type
+
+#### Option 1: SQLITE
+By default, without doing nothing, it uses an SQLITE database.
+#### Option 2: MySQL
+
+The following dependences are needed by the portal app to connect to the MySQL database. You can install the dependences with:
+
+```
+sudo apt-get install libmysqlclient-dev python-dev
+pip install mysqlclient
+```
+If mysql_config.cnf config file does not exist then create it with:
+
+```
+cp mysql_config.cnf.sample mysql_config.cnf
+```
+
+After, edit mysql_config.cnf with your MySQL connection settings.
+
+
 ### Initial setup
 
 python manage.py migrate
