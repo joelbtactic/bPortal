@@ -33,7 +33,7 @@ python manage.py migrate
 ```
 
 ### Configuring SuiteCRM server
-Edit conveniently `suitepy.ini` file.
+Edit conveniently `suitepy/suitepy.ini` file.
 
 Our development environment it's ready. Now we can create an admin account with:
 
