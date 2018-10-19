@@ -76,4 +76,5 @@ To stop the application press `CTRL-C` and run the command `deactivate` to deact
 WSGIDaemonProcess portal.example.com user=portal.example.com python-path=/home/portal.example.com/public_html/bPortal python-home=/home/portal.example.com/public_html/bPortal/env
 WSGIProcessGroup portal.example.com
 WSGIScriptAlias / /home/portal.example.com/public_html/bPortal/bPortal/wsgi.py
+Alias /phpmyadmin /home/portal.example.com/public_html/phpmyadmin
 ```
