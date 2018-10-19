@@ -31,18 +31,25 @@ pip install -r suitepy/requirements.txt
 python manage.py migrate
 ```
 
+### Configuring SuiteCRM server
+Edit conveniently `suitepy.ini` file.
+
 Our development environment it's ready. Now we can create an admin account with:
+
+### Superuser creation
+
 ```
 python manage.py createsuperuser
 ```
+
+### Quit development environment
 
 To deactivate our Python virtual environment simply run:
 ```
 deactivate
 ```
 
-### Configuring SuiteCRM server
-Edit conveniently `suitepy.ini` file.
+
 
 ### How to run the application using development environment
 First of all we have to activate our virtual environment.  
