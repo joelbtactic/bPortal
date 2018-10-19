@@ -1,6 +1,6 @@
-[![license](https://img.shields.io/github/license/sanchezfauste/bPortal.svg?style=flat-square)](LICENSE)
-[![bPortal documentation](https://img.shields.io/badge/docs-passing-brightgreen.svg?style=flat-square)](https://sanchezfauste.github.io/bPortal)
-[![GitHub (pre-)release](https://img.shields.io/github/release/sanchezfauste/bPortal/all.svg?style=flat-square)](https://github.com/sanchezfauste/bPortal/releases/latest)
+[![license](https://img.shields.io/github/license/btactic/bPortal.svg?style=flat-square)](LICENSE)
+[![bPortal documentation](https://img.shields.io/badge/docs-passing-brightgreen.svg?style=flat-square)](https://github.com/btactic/bPortal/tree/master/docs)
+[![GitHub (pre-)release](https://img.shields.io/github/release/btactic/bPortal/all.svg?style=flat-square)](https://github.com/btactic/bPortal/releases/latest)
 
 
 # bPortal
@@ -9,7 +9,7 @@ bPortal is a SuiteCRM portal written using django project.
 ## Clone the repository
 To clone the repository and all submodules simply run:
 ```
-git clone --recursive https://github.com/sanchezfauste/bPortal.git
+git clone --recursive https://github.com/btactic/bPortal.git
 ```
 ## Getting the development environment ready
 In this section is described how to get the development environment ready on Debian based systems.
@@ -69,3 +69,11 @@ python manage.py runserver 0.0.0.0:8080
 Once we have run the previous command, the application is listening on `http://localhost:8080`.
 
 To stop the application press `CTRL-C` and run the command `deactivate` to deactivate the Python virtual environment.
+
+## Apache configuration trick
+
+```
+WSGIDaemonProcess portal.example.com user=portal.example.com python-path=/home/portal.example.com/public_html/bPortal python-home=/home/portal.example.com/public_html/bPortal/env
+WSGIProcessGroup portal.example.com
+WSGIScriptAlias / /home/portal.example.com/public_html/bPortal/bPortal/wsgi.py
+```
