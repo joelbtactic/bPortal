@@ -54,7 +54,7 @@ deactivate
 
 
 
-### How to run the application using development environment
+## How to run the application using development environment
 First of all we have to activate our virtual environment.  
 Enter to root directory of the application (normally `bPortal`) and run:
 ```
