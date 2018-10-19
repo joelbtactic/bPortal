@@ -1,8 +1,8 @@
 # Installation of bPortal on a virtualmin instance
 This document describes how to install bPortal on a virtualmin server. This guide is based on Ubuntu 16.04 environment.
 
-## Install dependences
-The folliwing dependences are needed to run bPortal. You can install all dependences with:
+## Install dependencies
+The folliwing dependencies are needed to run bPortal. You can install all dependences with:
 
 ```bash
 sudo apt-get install libapache2-mod-wsgi gettext git
