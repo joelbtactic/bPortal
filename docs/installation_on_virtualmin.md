@@ -94,7 +94,7 @@ deactivate
 ```
 
 ## Creating superuser account
-Create a supperuser account to manage the portal configuration:
+Create a superuser account to manage the portal configuration:
 
 ```bash
 source env/bin/activate
