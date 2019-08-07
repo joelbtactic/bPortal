@@ -31,7 +31,7 @@ pip install -r suitepy/requirements.txt
 ```
 
 ### Configuring SuiteCRM server
-We need to edit 'suitepy/suitepy.ini' file, in order to do it:
+We need to edit `suitepy/suitepy.ini` file, in order to do it:
 ```
 [SuiteCRM v4_1 API Credentials]
 url = https://crm.example.org/custom/service/suitepy/rest.php
