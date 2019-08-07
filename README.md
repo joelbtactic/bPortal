@@ -31,7 +31,14 @@ pip install -r suitepy/requirements.txt
 ```
 
 ### Configuring SuiteCRM server
-Edit conveniently `suitepy/suitepy.ini` file.
+We need to edit 'suitepy/suitepy.ini' file, in order to do it:
+[SuiteCRM v4_1 API Credentials]
+url = https://crm.example.org/custom/service/suitepy/rest.php
+username = User_username
+password = User_password
+application_name = SuitePY
+verify_ssl = True
+
 
 Our development environment it's ready. Now we can create an admin account with:
 
@@ -58,7 +65,10 @@ After, edit mysql_config.cnf with your MySQL connection settings.
 
 ### Initial setup
 
+Every time we change suitepy.ini run this command and reload apache if you don't see changes.
+
 python manage.py migrate
+
 
 ### Superuser creation
 
@@ -92,7 +102,7 @@ Once we have run the previous command, the application is listening on `http://l
 To stop the application press `CTRL-C` and run the command `deactivate` to deactivate the Python virtual environment.
 
 ## Apache configuration trick
-
+Assuming that you have installed apache using virtualmin.
 ```
 WSGIDaemonProcess portal.example.com user=portal.example.com python-path=/home/portal.example.com/public_html/bPortal python-home=/home/portal.example.com/public_html/bPortal/env
 WSGIProcessGroup portal.example.com
