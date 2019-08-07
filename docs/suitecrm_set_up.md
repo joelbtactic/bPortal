@@ -11,5 +11,4 @@ Now you can create new accounts going to `Contacts` module, selecting a contact 
 
 ## Needed PR
 The folliwing PRs are needed to make bPortal work properly:  
-<strike>[PR 5755]</strike>(https://github.com/salesagility/SuiteCRM/pull/5755)  
-[PR 5745](https://github.com/salesagility/SuiteCRM/pull/5745)
+[PR 7218](https://github.com/salesagility/SuiteCRM/pull/7218) (probably fixed on v7.11.8 or superior)
