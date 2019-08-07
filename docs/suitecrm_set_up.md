@@ -1,7 +1,7 @@
 # SuiteCRM set up
 
 ## Enable AOP Account Creation
-In order to be able to create new accounts in the portal, you have to edit the AOP settings of SuiteCRM. To do that, go to administration pannel of SutieCRM and edit the `AOP Settings`.
+In order to be able to create new accounts in the portal, you have to edit the AOP settings of SuiteCRM. To do that, go to administration pannel of SuiteCRM and edit the `AOP Settings`.
 
 `Enable AOP` and `Enable External Portal` must be checked.
 
@@ -10,5 +10,5 @@ Finally specify the portal URL on `Joomla URL` field. For example, `https://port
 Now you can create new accounts going to `Contacts` module, selecting a contact and clicking on `Create Portal User` user.
 
 ## Needed PR
-The folliwing PRs are needed to make bPortal work properly:  
+The following PR is needed to make bPortal work properly:  
 [PR 7218](https://github.com/salesagility/SuiteCRM/pull/7218) (probably fixed on v7.11.8 or superior)
