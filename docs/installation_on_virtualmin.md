@@ -56,7 +56,7 @@ After, edit `bPortal/custom_settings.py` file and set the following parameters c
 ## Configure SuiteCRM instance
 Configuration of SuiteCRM instance that will be connected to the portal.
 
-It is recommended to create a new user used exclussively to interact with the portal. As we use suitecrm api v4_1 we will use it's credentials to autenticate.
+It is recommended to create a new user used exclusively to interact with the portal. As we use `suitecrm api v4_1` we will use it's credentials to autenticate.
 
 Create `suitepy/suitepy.ini` file if it is not created, using the following template. Replace the API credentials given as example by the ones that you are going to use:
 
@@ -119,7 +119,7 @@ deactivate
 ```
 
 ## Edit apache2 configuration
-Modify `/etc/apache2/sites-available/{virtualserver}.conf` file and add the following parameters to the port 443 port:
+Modify `/etc/apache2/sites-available/{virtualserver}.conf` file and add the following parameters to the port `443` port:
 
 ```conf
 WSGIDaemonProcess {virtualserver_user} user={virtualserver_user} python-path=/home/{virtualserver_home}/public_html/bPortal python-home=/home/{virtualserver_home}/public_html/bPortal/env
@@ -128,9 +128,9 @@ WSGIScriptAlias / /home/{virtualserver_home}/public_html/bPortal/bPortal/wsgi.py
 Alias /static /home/{virtualserver_home}/public_html/bPortal/static
 ```
 
-Comment/remove `DocumentRoot` directive from 80 and 443 port.
+Comment/remove `DocumentRoot` directive from `80` and `443` port.
 
-If you have SSL enabled you can redirect `HTTP` requests to `HTTPS` setting the following directive to the configuration of port 80:
+If you have SSL enabled you can redirect `HTTP` requests to `HTTPS` setting the following directive to the configuration of port `80`:
 
 ```
 Redirect permanent / https://{virtualserver_domain}/
