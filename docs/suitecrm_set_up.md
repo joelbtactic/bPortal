@@ -9,6 +9,6 @@ Finally specify the portal URL on `Joomla URL` field. For example, `https://port
 
 Now you can create new accounts going to `Contacts` module, selecting a contact and clicking on `Create Portal User` user.
 
-## Needed PR
-The following PR is needed to make bPortal work properly:  
-[PR 7218](https://github.com/salesagility/SuiteCRM/pull/7218) (probably fixed on v7.11.8 or superior)
+## Minimal SuiteCRM version
+* `v7.11.7`
+* `v7.10.19`
