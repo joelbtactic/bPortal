@@ -19,7 +19,7 @@
 #######################################################################
 
 from django import template
-import HTMLParser
+from html.parser import HTMLParser
 from datetime import datetime
 from django.conf import settings
 from django.utils.translation import gettext as _
