@@ -1,20 +1,25 @@
 # Installation of bPortal on a virtualmin instance
-This document describes how to install bPortal on a virtualmin server. This guide is based on Ubuntu 16.04 environment.
+
+This document describes how to install bPortal on a virtualmin server. 
+
+The supported operating systems: Debian GNU/Linux 11.
 
 ## Install dependencies
+
 The following dependencies are needed to run bPortal. You can install all dependences with:
 
 ```bash
-sudo apt-get install libapache2-mod-wsgi gettext git
+sudo apt install libapache2-mod-wsgi-py3 gettext git
 ```
 
 It's recommended to use `virtualenv` and `pip` packages to manage Python dependences. You can install both dependences with:
 
 ```bash
-sudo apt-get install virtualenv python-pip
+sudo apt install virtualenv python3-pip
 ```
 
 ## Clone the repository
+
 Go to home directory of the virtualserver in which the portal will be installed and clone the repository of bPortal with:
 
 ```bash
@@ -36,6 +41,7 @@ deactivate
 ```
 
 ## Configure bPortal settings
+
 If `bPortal/custom_settings.py` config file does not exist then create it with:
 
 ```bash
@@ -54,6 +60,7 @@ After, edit `bPortal/custom_settings.py` file and set the following parameters c
 - `DEFAULT_FROM_EMAIL` specify `FROM` used when sending emails.
 
 ## Configure SuiteCRM instance
+
 Configuration of SuiteCRM instance that will be connected to the portal.
 
 It is recommended to create a new user used exclusively to interact with the portal. As we use `suitecrm api v4_1` we will use it's credentials to autenticate.
@@ -70,10 +77,11 @@ verify_ssl = True
 ```
 
 ## Configuring MySQL database
+
 The following dependences are needed by the portal app to connect to the MySQL database. You can install the dependences with:
 
 ```bash
-sudo apt-get install libmysqlclient-dev python-dev
+sudo apt install default-libmysqlclient-dev python3-dev
 ```
 
 ```bash
@@ -95,30 +103,33 @@ Finally create the DB structure with:
 
 ```bash
 source env/bin/activate
-python manage.py migrate
+python3 manage.py migrate
 deactivate
 ```
 
 ## Creating superuser account
+
 Create a superuser account to manage the portal configuration:
 
 ```bash
 source env/bin/activate
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 deactivate
 ```
 
 ## Compile static files and translations
+
 You have to compile static files and translations. You can do it running the following commands inside `bPortal` directory:
 
 ```bash
 source env/bin/activate
-python manage.py collectstatic
+python3 manage.py collectstatic
 ./compile_messages.sh
 deactivate
 ```
 
 ## Edit apache2 configuration
+
 Modify `/etc/apache2/sites-available/{virtualserver}.conf` file and add the following parameters to the port `443` port:
 
 ```conf
@@ -137,6 +148,7 @@ Redirect permanent / https://{virtualserver_domain}/
 ```
 
 ### apache2 configuration to support Let's Encrypt certificates
+
 If you are planning to use the portal with a Let's Encrypt certificate you need to add the following rule in the virtualserver configuration, so Let's Encrypt can validate the certificate correctly.
 
 ```
