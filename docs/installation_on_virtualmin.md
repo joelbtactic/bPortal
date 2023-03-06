@@ -4,6 +4,9 @@ This document describes how to install bPortal on a virtualmin server.
 
 Supported operating systems: Debian GNU/Linux 11.
 
+## Requirements
+Install the `SuitePY-service` in your SuiteCRM, you can follow this [guide](https://github.com/joelbtactic/SuitePY-service/blob/improvements-v3/README.md).
+
 ## Install dependencies
 The following dependencies are needed to run bPortal. You can install all dependences with:
 
