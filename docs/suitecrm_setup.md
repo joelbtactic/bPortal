@@ -1,4 +1,4 @@
-# SuiteCRM set up
+# SuiteCRM setup
 
 ## Enable AOP Account Creation
 In order to be able to create new accounts in the portal, you have to edit the AOP settings of SuiteCRM. To do that, go to administration pannel of SuiteCRM and edit the `AOP Settings`.
