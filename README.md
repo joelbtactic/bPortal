@@ -16,8 +16,8 @@ In this section is described how to get the development environment ready on Deb
 
 It's recommended to use `virtualenv` and `pip` packages. You can install this two dependencies runnig:
 ```
-sudo apt-get update
-sudo apt-get install virtualenv python-pip
+sudo apt update
+sudo apt install virtualenv python3-pip
 ```
 
 Once you have `virtualenv` and `pip` tools ready it's time to prepare the virtual environment to run the application.  
@@ -29,10 +29,16 @@ source env/bin/activate
 pip install -r requirements.txt
 pip install -r suitepy/requirements.txt
 ```
+The `virtualenv env` command could show an error because the versions of `distlib` and `virtualenv` are incompatible, to correct this:
+```
+pip uninstall distlib
+pip install distlib==0.3.6
+```
 
 ### Configuring SuiteCRM server
 We need to edit `suitepy/suitepy.ini` file, in order to do it:
-```
+
+```ini
 [SuiteCRM v4_1 API Credentials]
 url = https://crm.example.org/custom/service/suitepy/rest.php
 username = User_username
@@ -52,7 +58,7 @@ By default, without doing nothing, it uses an SQLITE database.
 The following dependences are needed by the portal app to connect to the MySQL database. You can install the dependences with:
 
 ```
-sudo apt-get install libmysqlclient-dev python-dev
+sudo apt install default-libmysqlclient-dev python3-dev
 pip install mysqlclient
 ```
 If mysql_config.cnf config file does not exist then create it with:
@@ -68,13 +74,14 @@ After, edit mysql_config.cnf with your MySQL connection settings.
 
 Every time suitepy.ini changes run this command and reload apache if you do not see changes.
 
-python manage.py migrate
-
+```
+python3 manage.py migrate
+```
 
 ### Superuser creation
 
 ```
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 
 ### Quit development environment
@@ -95,19 +102,13 @@ source env/bin/activate
 
 Now we can start `bPortal` on development mode running:
 ```
-python manage.py runserver 0.0.0.0:8080
+python3 manage.py runserver 0.0.0.0:8080
 ```
 
 Once we have run the previous command, the application is listening on `http://localhost:8080`.
 
 To stop the application press `CTRL-C` and run the command `deactivate` to deactivate the Python virtual environment.
 
-## Apache configuration trick
+## Installation on virtualmin
 
-Assuming that you have installed apache using `virtualmin`.
-```
-WSGIDaemonProcess portal.example.com user=portal.example.com python-path=/home/portal.example.com/public_html/bPortal python-home=/home/portal.example.com/public_html/bPortal/env
-WSGIProcessGroup portal.example.com
-WSGIScriptAlias / /home/portal.example.com/public_html/bPortal/bPortal/wsgi.py
-Alias /phpmyadmin /home/portal.example.com/public_html/phpmyadmin
-```
+You can check [docs/installation_on_virtualmin.md](docs/installation_on_virtualmin.md) which explains how to install and configure bPortal on a Virtualmin server.
