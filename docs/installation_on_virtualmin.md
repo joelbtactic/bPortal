@@ -158,3 +158,5 @@ Finally reload apache2 configuration with:
 ```bash
 service apache2 reload
 ```
+## Cases module configuration
+To be able to use the **cases** module, you can read [setup.md](setup.md).
