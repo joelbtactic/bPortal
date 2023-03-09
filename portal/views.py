@@ -293,11 +293,13 @@ def create_case_add_attachments(request, bean_case):
                     note['parent_id'] = case_update['id']
                     note['contact_id'] = request.user.userattr.contact_id
                     SuiteCRM().save_bean(note)
+                    file_content = f.read()
+                    encoded = base64.b64encode(file_content)
                     if note['id']:
                         SuiteCRM().set_note_attachment(
                             note['id'],
                             f.name,
-                            base64.b64encode(f.read())
+                            encoded.decode()
                         )
                 return True
     except Exception:
@@ -482,11 +484,13 @@ def add_case_update(request):
                         note['parent_id'] = case_update['id']
                         note['contact_id'] = request.user.userattr.contact_id
                         SuiteCRM().save_bean(note)
+                        file_content = f.read()
+                        encoded = base64.b64encode(file_content)
                         if note['id']:
                             SuiteCRM().set_note_attachment(
                                 note['id'],
                                 f.name,
-                                base64.b64encode(f.read())
+                                encoded.decode()
                             )
                         else:
                             return JsonResponse(
