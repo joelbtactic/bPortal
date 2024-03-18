@@ -107,8 +107,7 @@ def get_case_updates(case_id):
         'Cases',
         case_id,
         'aop_case_updates',
-        related_fields=CASE_UPDATE_FIELDS,
-        related_module_link_name_to_fields_array=[
+        link_name_to_fields_array=[
             {
                 'name': 'notes',
                 'value': NOTE_FIELDS
@@ -123,8 +122,7 @@ def get_case_updates(case_id):
             }
         ],
         order_by='date_entered',
-        related_module_query='aop_case_updates.internal = 0 '
-        + 'OR aop_case_updates.internal IS NULL'
+        filter='aop_case_updates.internal = 0'
     )
 
 
