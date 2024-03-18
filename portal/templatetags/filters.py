@@ -91,10 +91,13 @@ def format_time(value):
 @register.filter(name='format_datetime')
 def format_datetime(value):
     try:
-        # Translators: Format for datetime fields following python date format.
-        return datetime.strptime(value, settings.SUITECRM_DATETIME_FORMAT)\
-            .strftime(_('%d/%m/%Y %H:%M'))
-    except Exception:
+        # Parse the ISO 8601 formatted date string to a datetime object
+        dt = datetime.fromisoformat(value)
+        # Convert the datetime to your desired format
+        formatted_date = dt.strftime("%Y-%m-%d %H:%M:%S")
+        return formatted_date
+    except Exception as e:
+        # Return the original value if any error occurs
         return value
 
 
