@@ -31,8 +31,8 @@ AOS_PDF_TEMPLATES_FIELDS = [
 def get_aos_invoices_pdf_templates():
     return SuiteCRM().get_bean_list(
         'AOS_PDF_Templates',
-        "aos_pdf_templates.type = 'AOS_Invoices'",
-        select_fields=AOS_PDF_TEMPLATES_FIELDS
+        filter="aos_pdf_templates.type = 'AOS_Invoices'",
+        fields=AOS_PDF_TEMPLATES_FIELDS
     )
 
 
