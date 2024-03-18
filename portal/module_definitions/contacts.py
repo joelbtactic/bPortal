@@ -34,7 +34,7 @@ class Contacts(ModuleDefinition):
 
     @property
     def contacts_link_name(self):
-        return 'reports_to_id'
+        return 'id'
 
     @property
     def accounts_link_type(self):
