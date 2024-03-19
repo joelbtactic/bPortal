@@ -476,20 +476,18 @@ def add_case_update(request):
                 SuiteCRM().save_bean(case_update)
                 if case_update['id']:
                     for f in request.FILES.getlist('update-case-attachment'):
+                        file_content = f.read()
+                        encoded = base64.b64encode(file_content)
                         note = Bean('Notes')
                         note['name'] = f.name
+                        note['filename'] = f.name
                         note['parent_type'] = 'AOP_Case_Updates'
                         note['parent_id'] = case_update['id']
                         note['contact_id'] = request.user.userattr.contact_id
+                        note['filecontents'] = encoded.decode()
                         SuiteCRM().save_bean(note)
-                        file_content = f.read()
-                        encoded = base64.b64encode(file_content)
                         if note['id']:
-                            SuiteCRM().set_note_attachment(
-                                note['id'],
-                                f.name,
-                                encoded.decode()
-                            )
+                           pass
                         else:
                             return JsonResponse(
                                 {
