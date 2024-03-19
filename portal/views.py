@@ -365,7 +365,7 @@ def module_edit(request, module, id):
                     module_def.before_save_on_edit_hook(bean, request)
                 except Exception:
                     pass
-                SuiteCRM().save_bean(bean)
+                SuiteCRM().save_bean(bean, True)
                 context.update({
                     'record_edited': True
                 })
@@ -407,7 +407,7 @@ def close_case(request):
             bean['id'] = request.POST['case-id']
             bean['state'] = 'Closed'
             bean['status'] = 'Closed_Closed'
-            SuiteCRM().save_bean(bean)
+            SuiteCRM().save_bean(bean, True)
         except Exception:
             pass
         url = reverse(
@@ -434,7 +434,7 @@ def reopen_case(request):
             bean['id'] = request.POST['case-id']
             bean['state'] = 'Open'
             bean['status'] = 'Open_New'
-            SuiteCRM().save_bean(bean)
+            SuiteCRM().save_bean(bean, True)
         except Exception:
             pass
         url = reverse(
