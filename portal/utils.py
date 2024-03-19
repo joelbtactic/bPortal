@@ -164,18 +164,14 @@ def get_filter_query(module, fields, parameters):
 
 def get_listview_filter(parameters):
     filters = parameters.copy()
-    if 'limit' in filters:
-        del filters['limit']
-    if 'offset' in filters:
-        del filters['offset']
-    if 'order_by' in filters:
-        del filters['order_by']
-    if 'order' in filters:
-        del filters['order']
-    if 'csrfmiddlewaretoken' in filters:
-        del filters['csrfmiddlewaretoken']
-    for key, value in filters.items():
-        if not value:
+    # List of keys to remove
+    keys_to_remove = ['limit', 'offset', 'order_by', 'order', 'csrfmiddlewaretoken']
+    for key in keys_to_remove:
+        if key in filters:
+            del filters[key]
+    # Iterate over a copy of the keys to avoid modifying the dictionary during iteration
+    for key in list(filters.keys()):
+        if not filters[key]:
             del filters[key]
     return filters
 
