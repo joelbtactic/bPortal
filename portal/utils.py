@@ -346,8 +346,8 @@ def retrieve_list_view_records(module, arguments, user):
                 module,
                 max_results=limit,
                 offset=offset,
-                order_by=order_by_string,
-                query=filter_query
+                order_by=order_by,
+                filter=filter_query
             )
         elif link_type == LinkType.RELATIONSHIP:
             if module_def.custom_where:
@@ -358,11 +358,12 @@ def retrieve_list_view_records(module, arguments, user):
                 related_module,
                 related_id,
                 link_name,
-                related_fields=['id'] + fields_list,
-                limit=limit,
+                only_relationship_fields=True,
                 offset=offset,
-                order_by=order_by_string,
-                related_module_query=filter_query
+                limit=limit,
+                filter=filter_query,
+                order_by=order_by,
+                order=order
             )
         elif link_type == LinkType.PARENT:
             if filter_query:
@@ -380,8 +381,8 @@ def retrieve_list_view_records(module, arguments, user):
                 module,
                 max_results=limit,
                 offset=offset,
-                order_by=order_by_string,
-                query=filter_query
+                order_by=order_by,
+                filter=filter_query
             )
         elif link_type == LinkType.NONE:
             if module_def.custom_where:
@@ -392,8 +393,8 @@ def retrieve_list_view_records(module, arguments, user):
                 module,
                 max_results=limit,
                 offset=offset,
-                order_by=order_by_string,
-                query=filter_query
+                order_by=order_by,
+                filter=filter_query
             )
     except Exception as e:
         print(e)
