@@ -448,8 +448,8 @@ def get_related_user_records(module, user):
             records = SuiteCRM().get_bean_list(
                 module,
                 order_by=order_by,
-                select_fields=fields_list,
-                query=filter_query
+                fields=fields_list,
+                filter=filter_query
             )
         elif link_type == LinkType.RELATIONSHIP:
             filter_query = ''
@@ -462,10 +462,7 @@ def get_related_user_records(module, user):
             records = SuiteCRM().get_relationships(
                 related_module,
                 related_id,
-                link_name,
-                related_fields=fields_list,
-                order_by=order_by,
-                related_module_query=filter_query
+                link_name
             )
         elif link_type == LinkType.PARENT:
             filter_query = get_filter_parent(
@@ -484,8 +481,8 @@ def get_related_user_records(module, user):
             records = SuiteCRM().get_bean_list(
                 module,
                 order_by=order_by,
-                query=filter_query,
-                select_fields=fields_list
+                filter=filter_query,
+                fields=fields_list
             )
         elif link_type == LinkType.NONE:
             filter_query = ''
@@ -498,8 +495,8 @@ def get_related_user_records(module, user):
             records = SuiteCRM().get_bean_list(
                 module,
                 order_by=order_by,
-                query=filter_query,
-                select_fields=fields_list
+                filter=filter_query,
+                fields=fields_list
             )
     except Exception:
         return None
