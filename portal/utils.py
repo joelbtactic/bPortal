@@ -614,7 +614,7 @@ def create_portal_user(contact):
     contact2['id'] = contact['id']
     contact2['joomla_account_id'] = user.id
     contact2['joomla_account_access'] = password
-    SuiteCRM().save_bean(contact2)
+    SuiteCRM().save_bean(contact2, True)
     return JsonResponse({"success": True})
 
 
