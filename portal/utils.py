@@ -302,6 +302,8 @@ def retrieve_list_view_records(module, arguments, user):
     offset = arguments.get('offset')
     if offset:
         offset = int(offset)
+    else:
+        offset = 1
     order_by = arguments.get('order_by')
     order = arguments.get('order')
     try:
