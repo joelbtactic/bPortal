@@ -880,7 +880,7 @@ def relate_bean_with_account(bean, account_id):
             result = SuiteCRM().set_relationship(
                 'Accounts',
                 account_id,
-                module_def.accounts_link_name,
+                module,
                 related_ids=[bean['id']]
             )
             if result['created'] != 1:
