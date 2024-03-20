@@ -853,7 +853,7 @@ def relate_bean_with_contact(bean, contact_id):
             result = SuiteCRM().set_relationship(
                 'Contacts',
                 contact_id,
-                module_def.contacts_link_name,
+                module,
                 related_ids=[bean['id']]
             )
             if result['created'] != 1:
