@@ -680,8 +680,7 @@ def user_is_linked_to_record(user, module, id):
             link_name = module_def.contacts_link_name
 
         if link_type == LinkType.RELATED:
-            filter_query = module.lower() + '.id = \'' + id + '\' AND '
-            filter_query += get_filter_related(
+            filter_query = get_filter_related(
                 module,
                 link_name,
                 related_id
@@ -689,16 +688,17 @@ def user_is_linked_to_record(user, module, id):
             records = SuiteCRM().get_bean_list(
                 module,
                 max_results=1,
-                query=filter_query
+                filter=filter_query
             )
         elif link_type == LinkType.RELATIONSHIP:
             records = SuiteCRM().get_relationships(
                 related_module,
                 related_id,
                 link_name,
-                related_fields=['id'],
+                only_relationship_fields=True,
                 limit=1,
-                related_module_query=module.lower() + '.id = \'' + id + '\''
+                offset=1,
+                filter=module.lower() + '.id = \'' + id + '\''
             )
         elif module_def.contacts_link_type == LinkType.PARENT:
             filter_query = module.lower() + '.id = \'' + id + '\' AND '
@@ -710,7 +710,7 @@ def user_is_linked_to_record(user, module, id):
             records = SuiteCRM().get_bean_list(
                 module,
                 max_results=1,
-                query=filter_query
+                filter=filter_query
             )
         if records['entry_list'][0]['id'] == id:
             return True
