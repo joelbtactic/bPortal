@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load filters %}
 
-{% if record.aos_products_quotes %}
+{% if record.AOS_Products_Quotes %}
     <h2 class="mt-4">{% trans "Line items" %}</h2>
     <table class="table table-sm table-striped">
         <thead class="thead-dark">
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for line in record.aos_products_quotes %}
+            {% for line in record.AOS_Products_Quotes %}
                 <tr>
                     {% if line.product_id == '0' %}
                         <td></td>
