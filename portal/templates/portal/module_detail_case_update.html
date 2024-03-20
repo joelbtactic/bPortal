@@ -9,7 +9,7 @@
                 <div class="col">
                     <span class="oi oi-chevron-bottom"></span>
                     <span class="oi oi-chevron-top"></span>
-                    <b>{{update.assigned_user_link.0.first_name}} {{update.assigned_user_link.0.last_name}}</b>
+                    <b>{{update.User.0.first_name}} {{update.User.0.last_name}}</b>
                 </div>
                 <div class="col">
                     <p class="card-text text-right"><small>{{update.date_entered|format_datetime}}</small></p>
@@ -24,7 +24,7 @@
                 <div class="col">
                     <span class="oi oi-chevron-bottom"></span>
                     <span class="oi oi-chevron-top"></span>
-                    <b>{{update.contact.0.first_name}} {{update.contact.0.last_name}}</b>
+                    <b>{{update.Contact.0.first_name}} {{update.Contact.0.last_name}}</b>
                 </div>
                 <div class="col">
                     <p class="card-text text-right"><small>{{update.date_entered|format_datetime}}</small></p>
@@ -35,9 +35,9 @@
         <div id="update_{{update.id}}" class="collapse {% if show %}show {% endif %} case-update-text">
             <div class="card-body">
                 <p class="card-text">{{update.description|decode|safe}}</p>
-                {% if update.notes %}
+                {% if update.Note %}
                     <p class="card-text"><small class="text-muted">{% trans "Attachments:" %}</small>
-                        {% for note in update.notes %}
+                        {% for note in update.Note %}
                             <a href="{% url 'note_attachment' note.id %}" class="card-link">{{note.name}}</a>
                         {% endfor %}
                     </p>
