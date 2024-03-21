@@ -72,10 +72,10 @@ It is recommended to create a new user used exclusively to interact with the por
 Create `suitepy/suitepy.ini` file if it is not created, using the following template. Replace the API credentials given as example by the ones that you are going to use:
 
 ```ini
-[SuiteCRM API Credentials]
-url = https://example.org/custom/service/suitepy/rest.php
-username = api
-password = 123456
+[SuiteCRM v8 API Credentials]
+url = https://crm.example.org
+client_id = your_client_id
+client_secret = your_client_secret
 application_name = SuitePY
 verify_ssl = True
 ```
