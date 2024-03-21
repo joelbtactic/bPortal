@@ -39,10 +39,10 @@ pip install distlib==0.3.6
 We need to edit `suitepy/suitepy.ini` file, in order to do it:
 
 ```ini
-[SuiteCRM v4_1 API Credentials]
-url = https://crm.example.org/custom/service/suitepy/rest.php
-username = User_username
-password = User_password
+[SuiteCRM v8 API Credentials]
+url = https://crm.example.org
+client_id = your_client_id
+client_secret = your_client_secret
 application_name = SuitePY
 verify_ssl = True
 ```
