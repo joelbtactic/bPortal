@@ -35,6 +35,36 @@
           console.log('Service Worker registration failed:', error);
         });
     }
+// Listen for the 'offline' event
+    window.addEventListener('offline', function () {
+      const popup = document.getElementById('offline-notification');
+      popup.classList.toggle("show");
+
+
+      // Hide the popup after 3 seconds
+      setTimeout(() => {
+        popup.classList.remove('show'); // Remove show class for fade out
+      }, 3000); // Show for 3 seconds      // You can replace the alert with a more sophisticated popup
+    });
+
+    // Handle link clicks
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          if (!navigator.onLine) {
+            event.preventDefault();  // Prevent the default link behavior
+            const popup = document.getElementById('offline-notification');
+            popup.classList.toggle("show");
+
+
+            // Hide the popup after 3 seconds
+            setTimeout(() => {
+              popup.classList.remove('show'); // Remove show class for fade out
+            }, 3000); // Show for 3 seconds
+          }
+        });
+      });
+    });
   </script>
 </head>
 
@@ -80,6 +110,10 @@
      </div>
    </nav>
 
+
+  <div class="popup">
+    <span class="popuptext" id="offline-notification">{% trans "You are currently offline. Some features may not be available." %}</span>
+  </div>
    <main role="main" class="container">
        {% block content %}{% endblock %}
    </main>
