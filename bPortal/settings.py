@@ -13,10 +13,45 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import logging
+from logging.handlers import TimedRotatingFileHandler
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'timed_rotating_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_error.log'),
+            'when': 'midnight',  # Rotate logs at midnight
+            'interval': 1,
+            'backupCount': 7,    # Keep logs for the last 7 days
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['timed_rotating_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'bPortal': {
+            'handlers': ['timed_rotating_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
