@@ -1,0 +1,60 @@
+/* Popup container */
+.popup {
+  position: fixed;
+  /* Change to fixed positioning */
+  top: 75px;
+  /* Distance from the top */
+  right: 175px;
+  /* Distance from the right */
+  cursor: pointer;
+  /* Show pointer on hover */
+  z-index: 1000;
+  /* Keep it on top */
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  /* Hidden by default */
+  width: 160px;
+  /* Set width */
+  background-color: #555;
+  /* Background color */
+  color: #fff;
+  /* Text color */
+  text-align: center;
+  /* Centered text */
+  border-radius: 6px;
+  /* Rounded corners */
+  padding: 8px 0;
+  /* Padding */
+  position: absolute;
+  /* Position relative to parent */
+  z-index: 1;
+  /* On top */
+  opacity: 0;
+  /* Start invisible for fade effect */
+  transition: opacity 0.5s ease;
+  /* Smooth transition for opacity */
+}
+
+/* Show the popup */
+.popup .show {
+  visibility: visible;
+  /* Make visible */
+  opacity: 1;
+  /* Fully opaque */
+  animation: fadeIn 0.5s;
+  /* Fade in animation */
+}
+
+/* Fade out effect */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
