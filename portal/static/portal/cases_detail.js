@@ -34,6 +34,7 @@ $(document).ready(function() {
                 "</div>"
             );
           $(this).modal("show");
+          messageSent = true; // Indicate that a message has been sent
         });
       })
       .fail(function(response) {
@@ -53,6 +54,13 @@ $(document).ready(function() {
           $("#loading_modal").modal("hide");
         }, 500);
       });
+  });
+  // Add click event handler for the "Ok" button in the modal
+  $("#update_case_modal").on("hidden.bs.modal", function () {
+    if (messageSent) {
+      window.location.href = window.location.pathname + window.location.search;
+      messageSent = false
+    }
   });
 });
 
