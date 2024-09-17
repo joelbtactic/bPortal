@@ -53,6 +53,8 @@ LOGGING = {
     },
 }
 
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -188,6 +190,68 @@ DEFAULT_ORDER_BY_FIELD = 'date_entered'
 # NOTE: Allowed values are 'asc' or 'desc'
 DEFAULT_ORDER = 'desc'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# PWA Config
+PWA_APP_NAME = 'bPortal'
+PWA_APP_DESCRIPTION = "Your bPortal"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/portal/img/icons/icon-152x152.png',
+        'sizes': '152x152',
+        'size': '152x152'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-512x512.png',
+        'sizes': '512x512',
+        'size': '512x512'
+
+    },
+]
+
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/portal/img/icons/icon-152x152.png',
+        'sizes': '152x152',
+        'size': '152x152'
+
+    },
+    {
+        'src': '/static/portal/img/icons/icon-512x512.png',
+        'sizes': '512x512',
+        'size': '512x512'
+
+    },
+
+]
+
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/portal/img/icons/splash-bportal-1242x2688.png',
+        'media': '(device-width: 1242px) and (device-height: 2688px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'es-es'
+
+PWA_APP_SCREENSHOTS = [
+    {
+      'src': '/static/portal/img/icons/app-screenshot_476x744.png',
+      'sizes': '476x744',
+      'type': 'image/png',
+      'platform': 'wide'
+    }
+]
+
+PWA_APP_DEBUG_MODE = True
 
 try:
     from .custom_settings import *
