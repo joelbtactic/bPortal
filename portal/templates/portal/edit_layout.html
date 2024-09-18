@@ -22,8 +22,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="row mb-4">
-    <div class="col-auto">
+<div class="custom-col-auto">
         {% with module_img=module_key|get_module_dark_svg %}
             <h2><img src="{% static module_img %}" width="33px">
         {% endwith %}
@@ -36,19 +35,19 @@
             {% endif %}
         </h2>
     </div>
-    <div class="col text-right">
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_layouts' %}"><span class="oi oi-list-rich"></span> {% trans "Edit views" %}</a>
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_list_layout' module_key %}"><span class="oi oi-list"></span> {% trans "List view" %}</a>
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_list_layout' module_key %}"><span class="oi oi-magnifying-glass"></span> {% trans "Filter view" %}</a>
-        {% if layout != 'detail' %}
-            <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_detail_layout' module_key %}"><span class="oi oi-eye"></span> {% trans "Detail view" %}</a>
+
+<div class="row mb-4">
+    <div class="col text-end">
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_layouts' %}"><i class="fa-solid fa-list-check"></i> {% trans "Edit views" %}</a>
+        {% if layout != 'filter' %}
+            <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_filter_layout' module_key %}"><i class="fa-solid fa-magnifying-glass"></i> {% trans "Filter view" %}</a>
         {% endif %}
-        {% if layout != 'edit' %}
-            <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_edit_layout' module_key %}"><span class="oi oi-pencil"></span> {% trans "Edit view" %}</a>
+        {% if layout != 'list' %}
+            <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_list_layout' module_key %}"><i class="fa-solid fa-list"></i> {% trans "List view" %}</a>
         {% endif %}
-        {% if layout != 'create' %}
-            <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_create_layout' module_key %}"><span class="oi oi-document"></span> {% trans "Create view" %}</a>
-        {% endif %}
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_detail_layout' module_key %}"><i class="fa-solid fa-eye"></i> {% trans "Detail view" %}</a>
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_edit_layout' module_key %}"><i class="fa-solid fa-pen"></i> {% trans "Edit view" %}</a>
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_create_layout' module_key %}"><i class="fa-solid fa-file"></i> {% trans "Create view" %}</a>
     </div>
 </div>
 
@@ -57,15 +56,13 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{% trans "Available fields" %}</h4>
-                <div class="card">
-                    <div class="list-group list-group-flush sortable-ul" id="available-fields">
+                    <div class="list-group sortable-ul" id="available-fields">
                         {% for field, def in available_fields.items %}
-                            <div class="list-group-item justify-content-between" id="{{ field }}">
+                            <div class="list-group-item justify-content-between me-5" id="{{ field }}">
                                 {{ def.label|safe }}
                                 <span class="text-muted">[{{ field }}]</span>
                             </div>
                         {% endfor %}
-                    </div>
                 </div>
                 <p class="card-text"><small class="text-muted">{% trans "Drag a field here to not show it" %}</small></p>
             </div>
@@ -75,26 +72,26 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{% trans "Fields" %}</h4>
-                <a href="#" class="btn btn-primary mb-2 mr-2" onclick="addLayoutRow();">{% trans "Add row (1 col)" %}</a>
+                <a href="#" class="btn btn-primary mb-2 me-2" onclick="addLayoutRow();">{% trans "Add row (1 col)" %}</a>
                 <a href="#" class="btn btn-primary mb-2" onclick="addLayoutRow2();">{% trans "Add row (2 col)" %}</a>
                 <div id="selected-fields" class="card mt-2">
                     <div class="list-group list-group-flush" id="selected_fields_list_group">
                         {% for row in module_fields %}
-                            <div class="list-group-item justify-content-between">
+                            <div class="list-group-item d-flex justify-content-between">
                                 <div class="row">
                                     {% for field in row %}
-                                        <div class="col card sortable-ul selected-field ml-2">
+                                        <div class="col card sortable-ul selected-field ms-2">
                                             {% if field %}
-                                                <div class="list-group-item justify-content-between" id="{{ field.name }}">
+                                                <div class="list-group-item d-flex justify-content-between" id="{{ field.name }}">
                                                     {{ field.label|safe }}
                                                     <span class="text-muted">[{{ field.name }}]</span>
                                                 </div>
                                             {% endif %}
                                         </div>
                                     {% endfor %}
-                                    <div class="col col-2 text-center align-self-center">
+                                    <div class="col-2 text-center d-flex align-items-center justify-content-center">
                                         <a class="btn btn-danger" href="#" role="button" onclick="remove_layout_row($(this));">
-                                            <span class="oi oi-x"></span>
+                                            <i class="fa-solid fa-xmark"></i>
                                         </a>
                                     </div>
                                 </div>
