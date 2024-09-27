@@ -5,6 +5,7 @@
 {% load static %}
 <script src="{% static 'portal/session.js' %}"></script>
 <script src="{% static 'portal/save_layouts.js' %}"></script>
+<script src="{% static 'portal/jquery.ui.touch-punch.js' %}"></script>
 {% endblock %}
 {% block title %}
     {% if layout == 'detail' %}
@@ -115,23 +116,98 @@
 </div>
 
 <script>
-    $( function() {
-      $( ".selected-field, #available-fields" ).sortable({
-        connectWith: ".sortable-ul"
-      }).disableSelection();
-      $(".selected-field").each(function() {
-        $(this).on("sortreceive", function(event, ui) {
-          if ($(this).children().length > 1) {
-            $(ui.sender).sortable('cancel');
-            var el1 = $(this).children()[0];
-            var el2 = $(ui.item)[0];
-            $(this).append(el2);
-            $(ui.sender).append(el1);
-          }
-        })
-      });
-      $( "#selected_fields_list_group" ).sortable();
-    } );
+    $(function() {
+        var scrollZone = 5; // The distance from the edge of the viewport to start scrolling
+        var scrollSpeed = 100; // The speed of the scrolling
+
+        function autoScroll(event) {
+            var viewportHeight = $(window).height();
+            var mouseY = event.touches ? event.touches[0].clientY : event.pageY;
+
+            // Scroll down
+            if (mouseY > (viewportHeight - scrollZone)) {
+                $('html, body').stop().animate({ scrollTop: $(document).scrollTop() + scrollSpeed }, 0);
+            }
+            // Scroll up
+            else if (mouseY < scrollZone) {
+                $('html, body').stop().animate({ scrollTop: $(document).scrollTop() - scrollSpeed }, 0);
+            }
+        }
+
+        $("#available-fields, .selected-field").sortable({
+            connectWith: ".sortable-ul",
+            containment: "body", // Restrict dragging to within the window
+            start: function(event, ui) {
+                // Initial class adjustment based on the starting container
+                if (ui.item.closest('#available-fields').length) {
+                    ui.item.addClass('me-5'); // Add margin and border
+                    ui.item.removeClass('border-0');
+
+                } else {
+                    ui.item.removeClass('me-5'); // Remove margin and border
+                    ui.item.removeClass('border-0');
+
+                    ui.item.addClass('border-0');
+
+                }
+            },
+            sort: function(event, ui) {
+                // Dynamically adjust the class based on the container during sorting
+                if (ui.placeholder.closest('#available-fields').length) {
+                    ui.item.addClass('me-5');
+                    ui.item.removeClass('border-0');
+
+                } else {
+                    ui.item.removeClass('me-5');
+                    ui.item.addClass('border-0');
+
+                }
+            },
+            stop: function(event, ui) {
+                // Final class adjustment based on the final container
+                if (ui.item.closest('#available-fields').length) {
+                    ui.item.addClass('me-5');
+                    ui.item.removeClass('border-0');
+                    
+                } else {
+                    ui.item.removeClass('me-5');
+                    ui.item.addClass('border-0');
+
+                }
+            }
+        }).disableSelection();
+
+        $("#available-fields").sortable({
+            start: function(event, ui) {
+                $(document).on('touchmove', autoScroll); // Start listening for touch movement
+                $(document).on('mousemove', autoScroll); // Start listening for mouse movement
+            },
+            stop: function(event, ui) {
+                $(document).off('touchmove', autoScroll); // Stop scrolling after drag ends (touch)
+                $(document).off('mousemove', autoScroll); // Stop scrolling after drag ends (mouse)
+            }
+        }).disableSelection();
+
+        // Handling the class when an item is moved to selected-fields or available-fields
+        $("#available-fields").on("sortreceive", function(event, ui) {
+            ui.item.addClass('me-5'); // Ensure margin and border are added when moved to available-fields
+            ui.item.removeClass('border-0');
+
+        });
+
+        $(".selected-field").on("sortreceive", function(event, ui) {
+            if ($(this).children().length > 1) {
+                $(ui.sender).sortable('cancel');
+                var el1 = $(this).children()[0];
+                var el2 = $(ui.item)[0];
+                $(this).append(el2);
+                $(ui.sender).append(el1);
+            }
+            ui.item.removeClass('me-5'); // Remove margin and border when moved to selected-fields
+            ui.item.addClass('border-0');
+
+        });
+    });
 </script>
 
 {% endblock %}
