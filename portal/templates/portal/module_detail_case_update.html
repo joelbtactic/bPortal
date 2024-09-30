@@ -45,3 +45,14 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cardImages = document.querySelectorAll('.card img');
+        cardImages.forEach(img => {
+            img.style.maxWidth = '100%';
+            img.style.width = 'auto';
+            img.style.height = 'auto';
+        });
+    });
+</script>
