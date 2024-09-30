@@ -6,6 +6,7 @@
 {% block content %}
 
     {% if available_modules %}
+    <div class="table-responsive">
         <table class="table table-striped">
             <thead class="thead-inverse">
                 <tr>
@@ -44,6 +45,7 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
     {% else %}
         <p>{% trans "There are no modules available." %}</p>
     {% endif %}
