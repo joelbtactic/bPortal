@@ -5,6 +5,7 @@
 {% load static %}
 <script src="{% static 'portal/session.js' %}"></script>
 <script src="{% static 'portal/save_layouts.js' %}"></script>
+<script src="{% static 'portal/jquery.ui.touch-punch.js' %}"></script>
 {% endblock %}
 {% block title %}
     {% if layout == 'filter' %}
@@ -92,11 +93,54 @@
 </div>
 
 <script>
-    $( function() {
-      $( "#selected-fields, #available-fields" ).sortable({
-        connectWith: ".sortable-ul"
+    $(function() {
+        var scrollZone = 20; // Distance from the edge of the viewport to start scrolling
+        var scrollSpeed = 100; // Speed of the scrolling
+
+        var isDragging = false;
+
+        function autoScroll(event) {
+            if (!isDragging) return;
+
+            var viewportHeight = window.innerHeight;
+            var touchY = event.touches ? event.touches[0].clientY : event.clientY;
+
+            // Scroll down
+            if (touchY > (viewportHeight - scrollZone)) {
+                window.scrollBy(0, scrollSpeed);
+            }
+            // Scroll up
+            else if (touchY < scrollZone) {
+                window.scrollBy(0, -scrollSpeed);
+            }
+        }
+
+        function startDragging() {
+            isDragging = true;
+            $(document).on('touchmove', autoScroll);  // Start auto-scrolling on touch move
+            $(document).on('mousemove', autoScroll);  // Also support mousemove for desktops
+        }
+
+        function stopDragging() {
+            isDragging = false;
+            $(document).off('touchmove', autoScroll); // Stop auto-scrolling on touch end
+            $(document).off('mousemove', autoScroll); // Also stop mousemove for desktops
+        }
+
+        $("#selected-fields, #available-fields").sortable({
+            connectWith: ".sortable-ul",
+            containment: "body", // Constrain dragging within the body
+            start: function(event, ui) {
+                startDragging();
+            },
+            stop: function(event, ui) {
+                stopDragging();
+            }
       }).disableSelection();
-    } );
+
+        $(document).on('touchend', stopDragging);  // Stop dragging when touch ends
+        $(document).on('mouseup', stopDragging);   // Stop dragging when mouse ends
+    });
 </script>
 
 {% endblock %}
