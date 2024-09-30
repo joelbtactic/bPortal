@@ -9,9 +9,8 @@
 {% block title %}{% blocktrans with role=role %}{{role}} role{% endblocktrans %}{% endblock %}
 {% block content %}
 
-<div class="row mb-4">
-    <div class="col-auto">
-        <h2>{% blocktrans with role=role %}<b>{{role}}</b> role configuration{% endblocktrans %}</h2>
+<div class="custom-col-auto">
+        <h2>{% blocktrans with role=role %}<b>{{ role }}</b> role configuration{% endblocktrans %}</h2>
     </div>
     <div class="col text-right">
         <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_roles' %}"><span class="oi oi-list-rich"></span> {% trans "Edit roles" %}</a>
@@ -21,9 +20,12 @@
     {% if role_bean %}
 
         {% if module_permissions %}
-            <a href="#" class="btn btn-primary float-right" onclick="saveRolePermissions();">{% trans "Save" %}</a><br><br>
+<a class="btn btn-primary me-2" href="{% url 'edit_roles' %}"><span class="oi oi-list-rich"></span> {% trans "Edit roles" %}</a>
+        <a href="#" class="btn btn-primary" onclick="saveRolePermissions();">{% trans "Save" %}</a>
+        <br><br>
+        <div class="table-responsive">
             <table class="table table-striped">
-                <thead class="thead-inverse">
+                <thead class="thead-dark">
                     <tr>
                         <th>{% trans "Module" %}</th>
                         <th>{% trans "Read" %}</th>
@@ -47,8 +49,11 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-            </table><br>
-            <a href="#" class="btn btn-primary float-right" onclick="saveRolePermissions();">{% trans "Save" %}</a><br>
+</table>
+            <br>
+        </div>
+<a href="#" class="btn btn-primary" onclick="saveRolePermissions();">{% trans "Save" %}</a>
+        <br>
             <script>
                 $( function() {
                     $( "#module_permissions" ).sortable();
