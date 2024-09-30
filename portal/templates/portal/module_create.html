@@ -65,9 +65,19 @@
                                 <b>{{ field.label|safe }}:</b>
                             </div>
                                         <div class="col-sm">
+{% if field.default_value %}
                                 {% with value=field.default_value %}
                                     {% include "portal/field_edit_display.html" %}
                                 {% endwith %}
+{% elif field.default %}
+                                                {% with value=field.default %}
+                                                    {% include "portal/field_edit_display.html" %}
+                                                {% endwith %}
+                                            {% else %}
+                                                {% with value='' %}
+                                                    {% include "portal/field_edit_display.html" %}
+                                                {% endwith %}
+                                            {% endif %}
                             </div>
                         </div>
                     {% endif %}
