@@ -22,16 +22,16 @@
 {% block content %}
 
 <div class="custom-col-auto">
-        {% with module_img=module_key|get_module_dark_svg %}
-            <h2><img src="{% static module_img %}" width="33px">
-        {% endwith %}
-            {% if layout == 'filter' %}
-                {% blocktrans with module=module_labels|get_label:module_key %}{{module}} filter view{% endblocktrans %}
-            {% else %}
-                {% blocktrans with module=module_labels|get_label:module_key %}{{module}} list view{% endblocktrans %}
-            {% endif %}
-        </h2>
-    </div>
+    {% with module_img=module_key|get_module_dark_svg %}
+        <h2><img src="{% static module_img %}" width="33px">
+    {% endwith %}
+        {% if layout == 'filter' %}
+            {% blocktrans with module=module_labels|get_label:module_key %}{{module}} filter view{% endblocktrans %}
+        {% else %}
+            {% blocktrans with module=module_labels|get_label:module_key %}{{module}} list view{% endblocktrans %}
+        {% endif %}
+    </h2>
+</div>
 
 <div class="row mb-4">
     <div class="col text-end">
@@ -136,7 +136,7 @@
             stop: function(event, ui) {
                 stopDragging();
             }
-      }).disableSelection();
+        }).disableSelection();
 
         $(document).on('touchend', stopDragging);  // Stop dragging when touch ends
         $(document).on('mouseup', stopDragging);   // Stop dragging when mouse ends
