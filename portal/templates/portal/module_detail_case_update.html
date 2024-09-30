@@ -3,31 +3,31 @@
 
 {% if update.assigned_user_id %}
     <div class="card border-success user-update">
-        <div class="card-header text-white bg-success{% if show %}{% else %} collapsed{% endif %}" data-toggle="collapse"
-            data-target="#update_{{update.id}}" aria-expanded="true" aria-controls="update_{{update.id}}">
+        <div class="card-header text-white bg-success {% if show %}{% else %} collapsed{% endif %}" data-bs-toggle="collapse"
+            data-bs-target="#update_{{update.id}}" aria-expanded="true" aria-controls="update_{{update.id}}">
             <div class="row">
                 <div class="col">
-                    <span class="oi oi-chevron-bottom"></span>
-                    <span class="oi oi-chevron-top"></span>
+                    <span class="bi bi-chevron-down"></span>
+                    <span class="bi bi-chevron-up"></span>
                     <b>{{update.User.0.first_name}} {{update.User.0.last_name}}</b>
                 </div>
                 <div class="col">
-                    <p class="card-text text-right"><small>{{update.date_entered|format_datetime}}</small></p>
+                    <p class="card-text text-end"><small>{{update.date_entered|format_datetime}}</small></p>
                 </div>
             </div>
         </div>
 {% else %}
     <div class="card border-warning contact-update">
-        <div class="card-header text-white bg-warning{% if show %}{% else %} collapsed{% endif %}" data-toggle="collapse"
-            data-target="#update_{{update.id}}" aria-expanded="true" aria-controls="update_{{update.id}}">
+        <div class="card-header text-white bg-warning {% if show %}{% else %} collapsed{% endif %}" data-bs-toggle="collapse"
+            data-bs-target="#update_{{update.id}}" aria-expanded="true" aria-controls="update_{{update.id}}">
             <div class="row">
                 <div class="col">
-                    <span class="oi oi-chevron-bottom"></span>
-                    <span class="oi oi-chevron-top"></span>
+                    <span class="bi bi-chevron-down"></span>
+                    <span class="bi bi-chevron-up"></span>
                     <b>{{update.Contact.0.first_name}} {{update.Contact.0.last_name}}</b>
                 </div>
                 <div class="col">
-                    <p class="card-text text-right"><small>{{update.date_entered|format_datetime}}</small></p>
+                    <p class="card-text text-end"><small>{{update.date_entered|format_datetime}}</small></p>
                 </div>
             </div>
         </div>
