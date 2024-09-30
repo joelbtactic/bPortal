@@ -53,7 +53,27 @@
         <script src="{% static 'portal/tinymce/tinymce.min.js' %}"></script>
         <script>
             tinymce.init({
-                selector: '#{{field.name}}'
+                selector: '#{{field.name}}',
+                menubar: false,
+                plugins: 'lists link autolink',  // Only include text-related plugins
+                toolbar: 'bold italic',  // No image-related buttons
+                paste_data_images: false,  // Disable pasting images
+                automatic_uploads: false,  // Disable automatic image uploads
+                file_picker_types: '',  // Disable file picker completely
+                block_unsupported_drop: true,  // Block image drag-and-drop
+
+                // Use the 'valid_elements' option to explicitly disallow <img> tags
+                valid_elements: "@[style],-ol[type|compact],-ul[type|compact],-li,br,b,strong,i,em,u,a[href|target],-p",
+                // The '@[style]' allows inline styles, and 'a[href|target]' allows links with href and target attributes.
+                license_key: 'gpl', 
+                setup: function (editor) {
+                editor.on('Paste', function (e) {
+                    // Prevent pasting of images
+                    if (e.clipboardData.types.indexOf('image') !== -1) {
+                    e.preventDefault();
+                    }
+                });
+                }
             });
         </script>
     {% endif %}
