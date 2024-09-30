@@ -51,25 +51,25 @@
             {% csrf_token %}
             <div class="card-body">
                 <div class="container">
-        {% for row in module_fields %}
-            <div class="row mb-3">
-            {% for field in row %}
-                <div class="col">
-                    {% if field %}
-                        <div class="row {% if field.required %} was-validated{% endif %}">
-                            {% if row|length == 1 %}
+                    {% for row in module_fields %}
+                        <div class="row mb-3">
+                        {% for field in row %}
+                            <div class="col">
+                                {% if field %}
+                                    <div class="row {% if field.required %} was-validated{% endif %}">
+                                        {% if row|length == 1 %}
                                             <div class="col-sm-2 {% if field.required %} required{% endif %}">
-                            {% else %}
+                                        {% else %}
                                             <div class="col-sm-4 {% if field.required %} required{% endif %}">
-                            {% endif %}
-                                <b>{{ field.label|safe }}:</b>
-                            </div>
+                                        {% endif %}
+                                            <b>{{ field.label|safe }}:</b>
+                                        </div>
                                         <div class="col-sm">
-{% if field.default_value %}
-                                {% with value=field.default_value %}
-                                    {% include "portal/field_edit_display.html" %}
-                                {% endwith %}
-{% elif field.default %}
+                                            {% if field.default_value %}
+                                                {% with value=field.default_value %}
+                                                    {% include "portal/field_edit_display.html" %}
+                                                {% endwith %}
+                                            {% elif field.default %}
                                                 {% with value=field.default %}
                                                     {% include "portal/field_edit_display.html" %}
                                                 {% endwith %}
@@ -78,22 +78,22 @@
                                                     {% include "portal/field_edit_display.html" %}
                                                 {% endwith %}
                                             {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
+                        {% endfor %}
                         </div>
+                    {% endfor %}
+                    {% if module_key == 'Cases' %}
+                        {% include "portal/create_case_attachment.html" %}
                     {% endif %}
-                </div>
-            {% endfor %}
-            </div>
-        {% endfor %}
-        {% if module_key == 'Cases' %}
-            {% include "portal/create_case_attachment.html" %}
-        {% endif %}
                     <button type="submit" class="btn btn-success mt-2 float-end">
-<span class="fas fa-check-circle"></span> {% trans "Create" %}
-</button>
+                        <span class="fas fa-check-circle"></span> {% trans "Create" %}
+                    </button>
                     <a href="{% url 'module_list' module_key %}" class="btn btn-danger mt-2 float-end me-2">
-<span class="fas fa-times-circle"></span> {% trans "Cancel" %}
-</a>
+                        <span class="fas fa-times-circle"></span> {% trans "Cancel" %}
+                    </a>
                 </div>
             </div>
         </form>
