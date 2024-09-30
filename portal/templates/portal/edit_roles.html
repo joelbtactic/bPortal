@@ -17,8 +17,8 @@
     </div>
 {% endif %}
 
-    {% if roles %}
-<div class="table-responsive">
+{% if roles %}
+    <div class="table-responsive">
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -44,26 +44,26 @@
                         {% endif %}
                     </td>
                 </tr>
-            {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
-</div>
-    {% else %}
-        <div class="alert alert-info" role="alert">
-            {% trans "No role has yet been defined." %}
-        </div>
-    {% endif %}
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        {% trans "No role has yet been defined." %}
+    </div>
+{% endif %}
 
-    <form id="create_role_form" method="post" action="{% url 'create_role' %}">
-        {% csrf_token %}
-        <div class="mb-3">
+<form id="create_role_form" method="post" action="{% url 'create_role' %}">
+    {% csrf_token %}
+    <div class="mb-3">
         <label for="role_name" class="form-label">{% trans "Role name" %}</label>
-            <input type="text" class="form-control" id="role_name" name="role_name" placeholder="{% trans "Role name" %}" pattern="\w+">
-            <div id="role_name_helper" class="form-text">
-                {% trans "Only alphanumeric characters or underscores can be used." %}
-            </div>
+        <input type="text" class="form-control" id="role_name" name="role_name" placeholder="{% trans "Role name" %}" pattern="\w+">
+        <div id="role_name_helper" class="form-text">
+            {% trans "Only alphanumeric characters or underscores can be used." %}
         </div>
-        <button type="submit" class="btn btn-primary mb-2"><span class="oi oi-plus"></span> {% trans "Create role" %}</button>
-    </form>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2"><span class="oi oi-plus"></span> {% trans "Create role" %}</button>
+</form>
 
 {% endblock %}
