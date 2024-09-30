@@ -5,25 +5,25 @@
 {% load pwa %}
 
 <head>
-    {% load static %}
+  {% load static %}
 
   {% progressive_web_app_meta %}
   <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" type="text/css" href="{% static 'portal/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'portal/bootstrap.min.css' %}" />
   <script src="{% static 'portal/jquery-3.6.4.min.js' %}"></script>
-    <script src="{% static 'portal/tether.min.js' %}"></script>
-    <script src="{% static 'portal/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'portal/popper.min.js' %}"></script>
-    <script src="{% static 'portal/bootstrap.min.js' %}"></script>
+  <script src="{% static 'portal/tether.min.js' %}"></script>
+  <script src="{% static 'portal/jquery-ui.min.js' %}"></script>
+  <script src="{% static 'portal/popper.min.js' %}"></script>
+  <script src="{% static 'portal/bootstrap.min.js' %}"></script>
   <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'portal/basepage.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'portal/basepage.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'portal/popup-offline.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'portal/jquery-ui.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'portal/iconic/font/css/open-iconic-bootstrap.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'portal/jquery-ui.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'portal/iconic/font/css/open-iconic-bootstrap.css' %}" />
   <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
-    {% block static_files %}{% endblock %}
-    <title>{% block title %}bPortal{% endblock %}</title>
+  {% block static_files %}{% endblock %}
+  <title>{% block title %}bPortal{% endblock %}</title>
   {% block favicon %}
   <link rel="shortcut icon" href="{% static 'portal/img/icons/favicon/favicon.ico' %}">{% endblock %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +36,7 @@
           console.log('Service Worker registration failed:', error);
         });
     }
-// Listen for the 'offline' event
+    // Listen for the 'offline' event
     window.addEventListener('offline', function () {
       const popup = document.getElementById('offline-notification');
       popup.classList.toggle("show");
@@ -71,36 +71,36 @@
 
 <body>
 
-   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand ms-3" href="{% url 'index' %}">
       <span class="oi oi-home"></span> {% trans "Home" %}
     </a>
     <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar"
       aria-expanded="false" aria-label="Toggle navigation">
-       <span class="navbar-toggler-icon"></span>
-     </button>
-     <div class="collapse navbar-collapse" id="navbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav me-auto ">
-         <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle px-3" id="modules_dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="oi oi-spreadsheet"></span> {% trans "Modules" %}
           </a>
           <!-- Dropdown Menu -->
           <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="modules_dropdown" style="min-width: 250px;">
             {% if modules %}
-                {% for module_key, module in modules.items %}
-                    {% with module_img=module_key|get_module_dark_svg %}
+            {% for module_key, module in modules.items %}
+            {% with module_img=module_key|get_module_dark_svg %}
             <a class="dropdown-item text-truncate" id="modules_dropdown_{{ module.module_key }}"
               href="{% url 'module_list' module.module_key %}">
               <img src="{% static module_img %}" width="25px" class="me-2"> <span>{{ module_labels|get_label:module_key }}</span>
             </a>
-                    {% endwith %}
-                {% endfor %}
-              {% endif %}
+            {% endwith %}
+            {% endfor %}
+            {% endif %}
           </ul>
-         </li>
-         {% if request.user.is_superuser %}
-           <li class="nav-item dropdown">
+        </li>
+        {% if request.user.is_superuser %}
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle px-3" id="configure_portal_dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="oi oi-wrench"></span> <span>{% trans "Configure portal" %}</span>
           </a>
@@ -121,29 +121,29 @@
               <span class="oi oi-document"></span> <span>{% trans "PDF Templates Settings" %}</span>
             </a>
           </ul>
-            </li>
-         {% endif %}
-       </ul>
-       <ul class="my-2 my-lg-0">
-         <span class="navbar-text my-2 my-sm-0">{% blocktrans with username=request.user.username %}Signed in as <b>{{username}}</b>{% endblocktrans %}</span>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="my-2 my-lg-0">
+        <span class="navbar-text my-2 my-sm-0">{% blocktrans with username=request.user.username %}Signed in as <b>{{username}}</b>{% endblocktrans %}</span>
         <a href="{% url 'user_profile' %}" class="btn btn-outline-primary my-2 my-sm-0 ms-2" role="button">
           <span class="oi oi-person"></span> {% trans "Profile" %}
         </a>
         <a href="{% url 'logout' %}" class="btn btn-outline-danger my-2 my-sm-0 ms-2 me-3" role="button">
           <span class="oi oi-account-logout"></span> {% trans "Logout" %}
         </a>
-       </ul>
-     </div>
-   </nav>
+      </ul>
+    </div>
+  </nav>
 
 
   <div class="popup">
     <span class="popuptext" id="offline-notification">{% trans "You are currently offline. Some features may not be available." %}</span>
   </div>
-   <main role="main" class="container">
-       {% block content %}{% endblock %}
-   </main>
+  <main role="main" class="container">
+    {% block content %}{% endblock %}
+  </main>
 
- </body>
+</body>
 
 </html>
