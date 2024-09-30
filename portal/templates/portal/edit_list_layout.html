@@ -20,8 +20,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="row mb-4">
-    <div class="col-auto">
+<div class="custom-col-auto">
         {% with module_img=module_key|get_module_dark_svg %}
             <h2><img src="{% static module_img %}" width="33px">
         {% endwith %}
@@ -32,17 +31,19 @@
             {% endif %}
         </h2>
     </div>
-    <div class="col text-right">
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_layouts' %}"><span class="oi oi-list-rich"></span> {% trans "Edit views" %}</a>
+
+<div class="row mb-4">
+    <div class="col text-end">
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_layouts' %}"><i class="fa-solid fa-list-check"></i> {% trans "Edit views" %}</a>
         {% if layout != 'filter' %}
-            <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_filter_layout' module_key %}"><span class="oi oi-magnifying-glass"></span> {% trans "Filter view" %}</a>
+            <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_filter_layout' module_key %}"><i class="fa-solid fa-magnifying-glass"></i> {% trans "Filter view" %}</a>
         {% endif %}
         {% if layout != 'list' %}
-            <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_list_layout' module_key %}"><span class="oi oi-list"></span> {% trans "List view" %}</a>
+            <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_list_layout' module_key %}"><i class="fa-solid fa-list"></i> {% trans "List view" %}</a>
         {% endif %}
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_detail_layout' module_key %}"><span class="oi oi-eye"></span> {% trans "Detail view" %}</a>
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_edit_layout' module_key %}"><span class="oi oi-pencil"></span> {% trans "Edit view" %}</a>
-        <a class="btn btn-primary ml-2 mb-2" href="{% url 'edit_create_layout' module_key %}"><span class="oi oi-document"></span> {% trans "Create view" %}</a>
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_detail_layout' module_key %}"><i class="fa-solid fa-eye"></i> {% trans "Detail view" %}</a>
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_edit_layout' module_key %}"><i class="fa-solid fa-pen"></i> {% trans "Edit view" %}</a>
+        <a class="btn btn-primary ms-2 mb-2" href="{% url 'edit_create_layout' module_key %}"><i class="fa-solid fa-file"></i> {% trans "Create view" %}</a>
     </div>
 </div>
 
@@ -51,16 +52,14 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{% trans "Available fields" %}</h4>
-                <div class="card">
-                    <ul class="list-group list-group-flush sortable-ul" id="available-fields">
+                    <ul class="list-group sortable-ul" id="available-fields">
                         {% for field, def in available_fields.items %}
-                            <li class="list-group-item justify-content-between" id="{{ field }}">
+                            <li class="list-group-item justify-content-between me-5" id="{{ field }}">
                                 {{ def.label|safe }}
                                 <span class="text-muted">[{{ field }}]</span>
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
                 <p class="card-text"><small class="text-muted">{% trans "Drag a field here to not show it" %}</small></p>
             </div>
         </div>
@@ -72,7 +71,7 @@
                 <div class="card">
                     <ul class="list-group list-group-flush sortable-ul" id="selected-fields">
                         {% for field, def in module_fields.items %}
-                            <li class="list-group-item justify-content-between" id="{{ field }}">
+                            <li class="list-group-item justify-content-between me-5" id="{{ field }}">
                                 {{ def.label|safe }}
                                 <span class="text-muted">[{{ field }}]</span>
                             </li>
