@@ -24,18 +24,18 @@
 {% block content %}
 
 <div class="custom-col-auto">
-        {% with module_img=module_key|get_module_dark_svg %}
-            <h2><img src="{% static module_img %}" width="33px">
-        {% endwith %}
-            {% if layout == 'detail' %}
-                {% blocktrans with module=module_labels|get_label:module_key %}{{module}} detail view{% endblocktrans %}
-            {% elif layout == 'edit' %}
-                {% blocktrans with module=module_labels|get_label:module_key %}{{module}} edit view{% endblocktrans %}
-            {% elif layout == 'create' %}
-                {% blocktrans with module=module_labels|get_label:module_key %}{{module}} create view{% endblocktrans %}
-            {% endif %}
-        </h2>
-    </div>
+    {% with module_img=module_key|get_module_dark_svg %}
+        <h2><img src="{% static module_img %}" width="33px">
+    {% endwith %}
+        {% if layout == 'detail' %}
+            {% blocktrans with module=module_labels|get_label:module_key %}{{module}} detail view{% endblocktrans %}
+        {% elif layout == 'edit' %}
+            {% blocktrans with module=module_labels|get_label:module_key %}{{module}} edit view{% endblocktrans %}
+        {% elif layout == 'create' %}
+            {% blocktrans with module=module_labels|get_label:module_key %}{{module}} create view{% endblocktrans %}
+        {% endif %}
+    </h2>
+</div>
 
 <div class="row mb-4">
     <div class="col text-end">
@@ -64,7 +64,7 @@
                                 <span class="text-muted">[{{ field }}]</span>
                             </div>
                         {% endfor %}
-                </div>
+                    </div>
                 <p class="card-text"><small class="text-muted">{% trans "Drag a field here to not show it" %}</small></p>
             </div>
         </div>
