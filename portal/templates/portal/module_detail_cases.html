@@ -20,6 +20,115 @@
         {% include "portal/module_detail_case_update.html" with show=forloop.last %}
     {% endfor %}
 </div>
+<nav aria-label="Pagination">
+  <ul class="pagination justify-content-end">
+    {% if case_updates.first_page != None %}
+        <form class="page-item filtered"
+            id="{{ module_key }}_filter"
+            action="{% url 'module_detail' module_key record.id %}"
+            method="post"
+        >
+            {% csrf_token %}
+            <input type="hidden"
+                value="{{ case_updates.current_limit }}"
+                name="limit"
+            >
+            <input type="hidden"
+                value="{{ case_updates.first_page}}"
+                name="offset"
+            >
+            <input type="hidden"
+              value="{{ case_updates.last_page_control }}"
+              name="last_page_control"
+            >
+            <button class="page-link" type="submit"><span class="oi">⏮</span></button>
+        </form>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1"><span class="oi">⏮</span></a>
+        </li>
+      {% endif %}
+      {% if case_updates.previous_offset != None %}
+        <form class="page-item filtered"
+            id="{{ module_key }}_filter"
+            action="{% url 'module_detail' module_key record.id %}"
+            method="post"
+        >
+            {% csrf_token %}
+            <input type="hidden"
+                value="{{ case_updates.current_limit }}"
+                name="limit"
+            >
+            <input type="hidden"
+                value="{{ case_updates.previous_offset }}"
+                name="offset"
+            >
+            <input type="hidden"
+              value="{{ case_updates.last_page_control }}"
+              name="last_page_control"
+            >
+            <button class="page-link" type="submit"><span class="oi oi-arrow-left"></span> {% trans "Previous" %}</button>
+        </form>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1"><span class="oi oi-arrow-left"></span> {% trans "Previous" %}</a>
+        </li>
+      {% endif %}
+      {% if case_updates.next_offset != None %}
+          <form class="page-item filtered"
+              id="{{ module_key }}_filter"
+              action="{% url 'module_detail' module_key record.id %}"
+              method="post"
+          >
+              {% csrf_token %}
+              <input type="hidden"
+                  value="{{ case_updates.current_limit }}"
+                  name="limit"
+              >
+              <input type="hidden"
+                  value="{{ case_updates.next_offset }}"
+                  name="offset"
+              >
+              <input type="hidden"
+                value="{{ case_updates.last_page_control }}"
+                name="last_page_control"
+              >
+              <button class="page-link" type="submit">{% trans "Next" %} <span class="oi oi-arrow-right"></span></button>
+          </form>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">{% trans "Next" %} <span class="oi oi-arrow-right"></span></a>
+        </li>
+      {% endif %}
+      {% if case_updates.last_page != None %}
+        <form class="page-item filtered"
+            id="{{ module_key }}_filter"
+            action="{% url 'module_detail' module_key record.id %}"
+            method="post"
+        >
+            {% csrf_token %}
+            <input type="hidden"
+                value="{{ case_updates.current_limit }}"
+                name="limit"
+            >
+            <input type="hidden"
+                value="{{ case_updates.last_page}}"
+                name="offset"
+            >
+            <input type="hidden"
+              value="{{ case_updates.last_page_control }}"
+              name="last_page_control"
+            >
+            <button class="page-link" type="submit"><span class="oi">⏭</span></button>
+        </form>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1"><span class="oi">⏭</span></a>
+      </li>
+      {% endif %}
+  </ul>
+</nav>
+
 <div class="card border-warning">
   <div class="card-body">
     <h5 class="card-title">{% trans "Update case" %}</h5>
