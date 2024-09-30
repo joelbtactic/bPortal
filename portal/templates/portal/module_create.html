@@ -20,8 +20,12 @@
                 <h1><img src="{% static module_img %}" width="44px"> {{ module_labels|get_label:module_key }}</h1>
             {% endwith %}
         </div>
-        <div class="col text-right">
-            <a href="{% url 'module_list' module_key %}" class="btn btn-primary"><span class="oi oi-list"></span> {% trans "List" %}</a>
+    </div>
+    <div class="row">
+        <div class="col text-end">
+            <a href="{% url 'module_list' module_key %}" class="btn btn-primary">
+                <span class="fas fa-list"></span> {% trans "List" %}
+            </a>
         </div>
     </div>
 
@@ -29,19 +33,15 @@
 
     {% if error_on_create %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span class="oi oi-cloud-upload"></span>
+            <span class="fas fa-cloud-upload-alt"></span>
             {% trans "Error creating record." %}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% elif record_created_successfully %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <span class="oi oi-cloud-upload"></span>
+            <span class="fas fa-cloud-upload-alt"></span>
             {% trans "Record created successfully." %}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
 
@@ -58,13 +58,13 @@
                     {% if field %}
                         <div class="row {% if field.required %} was-validated{% endif %}">
                             {% if row|length == 1 %}
-                                <div class="col-2 {% if field.required %} required{% endif %}">
+                                            <div class="col-sm-2 {% if field.required %} required{% endif %}">
                             {% else %}
-                                <div class="col-4 {% if field.required %} required{% endif %}">
+                                            <div class="col-sm-4 {% if field.required %} required{% endif %}">
                             {% endif %}
                                 <b>{{ field.label|safe }}:</b>
                             </div>
-                            <div class="col">
+                                        <div class="col-sm">
                                 {% with value=field.default_value %}
                                     {% include "portal/field_edit_display.html" %}
                                 {% endwith %}
@@ -78,8 +78,12 @@
         {% if module_key == 'Cases' %}
             {% include "portal/create_case_attachment.html" %}
         {% endif %}
-                    <button type="submit" class="btn btn-success mt-2 float-right"><span class="oi oi-circle-check"></span> {% trans "Create" %}</button>
-                    <a href="{% url 'module_list' module_key %}" class="btn btn-danger mt-2 float-right mr-2"><span class="oi oi-circle-x"></span> {% trans "Cancel" %}</a>
+                    <button type="submit" class="btn btn-success mt-2 float-end">
+<span class="fas fa-check-circle"></span> {% trans "Create" %}
+</button>
+                    <a href="{% url 'module_list' module_key %}" class="btn btn-danger mt-2 float-end me-2">
+<span class="fas fa-times-circle"></span> {% trans "Cancel" %}
+</a>
                 </div>
             </div>
         </form>
