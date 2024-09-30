@@ -7,14 +7,16 @@
 {% block content %}
 
 {% if modules %}
-  <div class="card-columns text-center">
+  <div class="row text-center" data-masonry='{"percentPosition": true }'>
     {% for module_key, module in modules.items %}
+<div class="col-12 col-md-6 col-lg-4 mb-4">
       <a id="modules_dropdown_{{ module.module_key }}" href="{% url 'module_list' module.module_key %}" class="card p-3 text-white bg-dark">
         {% with module_img=module_key|get_module_light_svg %}
             <h3 class="card-title"><img src="{% static module_img %}" width="128px"></h3>
         {% endwith %}
         <p class="card-text">{{ module_labels|get_label:module_key }}</p>
       </a>
+</div>
     {% endfor %}
   </div>
 {% else %}
