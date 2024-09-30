@@ -4,8 +4,9 @@
 {% block content %}
 
     {% if users %}
+<div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-inverse">
+            <thead class="thead-dark">
                 <tr>
                     <th>{% trans "User" %}</th>
                     <th>{% trans "First name" %}</th>
@@ -20,12 +21,15 @@
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>
                     <td>
-                        <a href="{% url 'edit_user' user.id %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-pencil"></span> {% trans "Edit user" %}</a>
+                        <a href="{% url 'edit_user' user.id %}" role="button" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-pencil"></i> {% trans "Edit user" %}
+</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+</div>
     {% else %}
         <div class="alert alert-info" role="alert">
             {% trans "No users found." %}
