@@ -3,8 +3,9 @@
 
 {% if record.AOS_Products_Quotes %}
     <h2 class="mt-4">{% trans "Line items" %}</h2>
+<div class="table-responsive">
     <table class="table table-sm table-striped">
-        <thead class="thead-dark">
+        <thead class="table-dark">
             <tr>
                 <th>{% trans "Quantity" %}</th>
                 <th>{% trans "Description" %}</th>
@@ -27,7 +28,7 @@
                     {% endif %}
                     <td>
                         {% if line.item_description %}
-                            <span style="color: #007bff;" data-toggle="tooltip" title="{{line.item_description|safe}}" data-placement="right">{{line.name|safe}}</span>
+                            <span style="color: #007bff;" data-bs-toggle="tooltip" title="{{line.item_description|safe}}" data-bs-placement="right">{{line.name|safe}}</span>
                         {% else %}
                             {{line.name|safe}}
                         {% endif %}
@@ -47,9 +48,11 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+
     <div class="row">
-        <div class="col-lg-3 ml-auto mt-3">
-            <table class="table table-sm table">
+        <div class="col-lg-3 ms-auto mt-3">
+            <table class="table table-sm">
                 <tbody>
                     {% if record.total_amt %}
                         <tr>
@@ -105,15 +108,19 @@
             </table>
         </div>
     </div>
+
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
 {% endif %}
+
 {% if pdf_template_enabled %}
-    <div class="text-right">
-        <a class="btn btn-primary mt-4" href="{% url 'get_pdf' module_key record.id %}"><span class="oi oi-document"></span> {% trans "Download PDF" %}</a>
+    <div class="text-end">
+        <a class="btn btn-primary mt-4" href="{% url 'get_pdf' module_key record.id %}">
+<span class="fas fa-file-alt"></span> {% trans "Download PDF" %}
+</a>
     </div>
 {% endif %}
 
