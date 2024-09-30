@@ -10,13 +10,13 @@
 {% block content %}
 
 <div class="custom-col-auto">
-        <h2>{% blocktrans with role=role %}<b>{{ role }}</b> role configuration{% endblocktrans %}</h2>
-    </div>
+    <h2>{% blocktrans with role=role %}<b>{{ role }}</b> role configuration{% endblocktrans %}</h2>
+</div>
 
-    {% if role_bean %}
+{% if role_bean %}
 
-        {% if module_permissions %}
-<a class="btn btn-primary me-2" href="{% url 'edit_roles' %}"><span class="oi oi-list-rich"></span> {% trans "Edit roles" %}</a>
+    {% if module_permissions %}
+        <a class="btn btn-primary me-2" href="{% url 'edit_roles' %}"><span class="oi oi-list-rich"></span> {% trans "Edit roles" %}</a>
         <a href="#" class="btn btn-primary" onclick="saveRolePermissions();">{% trans "Save" %}</a>
         <br><br>
         <div class="table-responsive">
@@ -45,29 +45,29 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-</table>
+            </table>
             <br>
         </div>
-<a href="#" class="btn btn-primary" onclick="saveRolePermissions();">{% trans "Save" %}</a>
+        <a href="#" class="btn btn-primary" onclick="saveRolePermissions();">{% trans "Save" %}</a>
         <br>
-            <script>
-                $(function() {
-                    $("#module_permissions").sortable({
+        <script>
+            $(function() {
+                $("#module_permissions").sortable({
                     placeholder: "ui-state-highlight"
                 });
-                    $("#module_permissions").disableSelection();
-                });
-            </script>
-        {% else %}
-            <div class="alert alert-danger" role="alert">
-                {% trans "There are no modules available." %}
-            </div>
-        {% endif %}
-
+                $("#module_permissions").disableSelection();
+            });
+        </script>
     {% else %}
         <div class="alert alert-danger" role="alert">
-            {% blocktrans with role=role %}<b>{{ role }}</b> role does not exist.{% endblocktrans %}
+            {% trans "There are no modules available." %}
         </div>
     {% endif %}
+
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        {% blocktrans with role=role %}<b>{{ role }}</b> role does not exist.{% endblocktrans %}
+    </div>
+{% endif %}
 
 {% endblock %}
