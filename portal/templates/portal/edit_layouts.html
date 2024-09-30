@@ -8,7 +8,7 @@
     {% if available_modules %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-inverse">
+            <thead class="thead-dark">
                 <tr>
                     <th>{% trans "Module" %}</th>
                     <th></th>
@@ -27,19 +27,19 @@
                         </td>
                     {% endwith %}
                     <td>
-                        <a href="{% url 'edit_list_layout' module.module_key %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-list"></span> {% trans "List view" %}</a>
+                        <a href="{% url 'edit_list_layout' module.module_key %}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-list"></i> {% trans "List view" %}</a>
                     </td>
                     <td>
-                        <a href="{% url 'edit_filter_layout' module.module_key %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-magnifying-glass"></span> {% trans "Filter view" %}</a>
+                        <a href="{% url 'edit_filter_layout' module.module_key %}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-magnifying-glass"></i> {% trans "Filter view" %}</a>
                     </td>
                     <td>
-                        <a href="{% url 'edit_detail_layout' module.module_key %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-eye"></span> {% trans "Detail view" %}</a>
+                        <a href="{% url 'edit_detail_layout' module.module_key %}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-eye"></i> {% trans "Detail view" %}</a>
                     </td>
                     <td>
-                        <a href="{% url 'edit_create_layout' module.module_key %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-document"></span> {% trans "Create view" %}</a>
+                        <a href="{% url 'edit_create_layout' module.module_key %}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-file"></i> {% trans "Create view" %}</a>
                     </td>
                     <td>
-                        <a href="{% url 'edit_edit_layout' module.module_key %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-pencil"></span> {% trans "Edit view" %}</a>
+                        <a href="{% url 'edit_edit_layout' module.module_key %}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-pen"></i> {% trans "Edit view" %}</a>
                     </td>
                 </tr>
             {% endfor %}
