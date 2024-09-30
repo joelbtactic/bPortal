@@ -5,25 +5,22 @@
 
 {% if success_msg %}
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        {{msg}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
 
 {% if error_msg %}
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{msg}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
 
     {% if roles %}
+<div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-inverse">
+            <thead class="thead-dark">
                 <tr>
                     <th>{% trans "Role" %}</th>
                     <th></th>
@@ -35,13 +32,13 @@
                 <tr>
                     <td>{{ role.name }}</td>
                     <td>
-                        <a href="{% url 'edit_role' role.name %}" role="button" class="btn btn-outline-primary btn-sm"><span class="oi oi-pencil"></span> {% trans "Edit role" %}</a>
+                        <a href="{% url 'edit_role' role.name %}" class="btn btn-outline-primary btn-sm"><span class="oi oi-pencil"></span> {% trans "Edit role" %}</a>
                     </td>
                     <td>
                         {% if role != default_role %}
-                            <form method="post" action="{% url 'delete_role' %}">
+                            <form method="post" action="{% url 'delete_role' %}" class="d-inline">
                                 {% csrf_token %}
-                                <input type="hidden" value="{{ role.name }}" name="role_name">
+                                <input type="hidden" name="role_name" value="{{ role.name }}">
                                 <button type="submit" class="btn btn-outline-danger btn-sm"><span class="oi oi-trash"></span> {% trans "Delete role" %}</button>
                             </form>
                         {% endif %}
@@ -50,6 +47,7 @@
             {% endfor %}
             </tbody>
         </table>
+</div>
     {% else %}
         <div class="alert alert-info" role="alert">
             {% trans "No role has yet been defined." %}
@@ -58,11 +56,12 @@
 
     <form id="create_role_form" method="post" action="{% url 'create_role' %}">
         {% csrf_token %}
-        <div class="form-group form-inline">
-            <input type="text" class="form-control mr-3" id="role_name" name="role_name" placeholder="{% trans "Role name" %}" pattern="\w+">
-            <small id="role_name_helper" class="text-muted">
+        <div class="mb-3">
+        <label for="role_name" class="form-label">{% trans "Role name" %}</label>
+            <input type="text" class="form-control" id="role_name" name="role_name" placeholder="{% trans "Role name" %}" pattern="\w+">
+            <div id="role_name_helper" class="form-text">
                 {% trans "Only alphanumeric characters or underscores can be used." %}
-            </small>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary mb-2"><span class="oi oi-plus"></span> {% trans "Create role" %}</button>
     </form>
