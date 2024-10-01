@@ -53,29 +53,19 @@
                                         {% if order_by == field and order != "desc" %}
                                             <i class="fas fa-arrow-up selected-arrow"></i>
                                         {% else %}
-                                            <form class="filtered"
-                                                id="order_by_{{ field }}_asc_form"
-                                                action="{% url 'module_list' module_key %}"
-                                                method="post"
-                                                style="display: inline;"
-                                            >
+                                            <form class="filtered" id="order_by_{{ field }}_asc_form" action="{% url 'module_list' module_key %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
+                                                <input type="hidden" value="{{ field }}" name="order_by">
+                                            {% if records.current_limit != None %}
+                                            <input type="hidden"
+                                                value="{{ records.current_limit }}"
+                                                name="limit">
+                                            {% endif %}
+                                            {% if records.current_offset != None %}
                                                 <input type="hidden"
-                                                    value="{{ field }}"
-                                                    name="order_by"
-                                                >
-                                                {% if records.current_limit != None %}
-                                                    <input type="hidden"
-                                                        value="{{ records.current_limit }}"
-                                                        name="limit"
-                                                    >
-                                                {% endif %}
-                                                {% if records.current_offset != None %}
-                                                    <input type="hidden"
-                                                        value="{{ records.current_offset }}"
-                                                        name="offset"
-                                                    >
-                                                {% endif %}
+                                                    value="{{ records.current_offset }}"
+                                                    name="offset">
+                                            {% endif %}
                                                 <a href="#" onclick="this.parentNode.submit();" id="order_by_{{ field }}_asc">
                                                     <i class="fas fa-arrow-up"></i>
                                                 </a>
@@ -84,33 +74,20 @@
                                         {% if order_by == field and order == "desc" %}
                                             <i class="fas fa-arrow-down selected-arrow"></i>
                                         {% else %}
-                                            <form class="filtered"
-                                                id="order_by_{{ field }}_desc_form"
-                                                action="{% url 'module_list' module_key %}"
-                                                method="post"
-                                                style="display: inline;"
-                                            >
+                                            <form class="filtered" id="order_by_{{ field }}_desc_form" action="{% url 'module_list' module_key %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
-                                                <input type="hidden"
-                                                    value="{{ field }}"
-                                                    name="order_by"
-                                                >
-                                                <input type="hidden"
-                                                    value="desc"
-                                                    name="order"
-                                                >
+                                                <input type="hidden" value="{{ field }}" name="order_by">
+                                                <input type="hidden" value="desc" name="order">
                                                 {% if records.current_limit != None %}
-                                                    <input type="hidden"
-                                                        value="{{ records.current_limit }}"
-                                                        name="limit"
-                                                    >
-                                                {% endif %}
-                                                {% if records.current_offset != None %}
-                                                    <input type="hidden"
-                                                        value="{{ records.current_offset }}"
-                                                        name="offset"
-                                                    >
-                                                {% endif %}
+                                                <input type="hidden"
+                                                    value="{{ records.current_limit }}"
+                                                    name="limit">
+                                            {% endif %}
+                                            {% if records.current_offset != None %}
+                                                <input type="hidden"
+                                                    value="{{ records.current_offset }}"
+                                                    name="offset">
+                                            {% endif %}
                                                 <a href="#" onclick="this.parentNode.submit();" id="order_by_{{ field }}_desc">
                                                     <i class="fas fa-arrow-down"></i>
                                                 </a>
@@ -185,60 +162,52 @@
                     </tbody>
                 </table>
             </div>
-                  <ul class="pagination justify-content-end">
-                      {% if records.previous_offset != None %}
+            <ul class="pagination justify-content-end">
+                {% if records.previous_offset != None %}
                     <li class="page-item">
                         <form action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
                             {% csrf_token %}
-                            <input type="hidden"
-                                value="{{ records.current_limit }}"
-                                name="limit"
-                            >
-                            <input type="hidden"
-                                value="{{ records.previous_offset }}"
-                                name="offset"
-                            >
+                            <input type="hidden" name="limit" value="{{ records.current_limit }}">
+                            <input type="hidden" name="offset" value="{{ records.previous_offset }}">
                             {% if order_by %}
-                                <input type="hidden" value="{{ order_by }}" name="order_by">
+                                <input type="hidden" name="order_by" value="{{ order_by }}">
                                 {% if order %}
-                                    <input type="hidden" value="{{ order }}" name="order">
+                                    <input type="hidden" name="order" value="{{ order }}">
                                 {% endif %}
                             {% endif %}
-                            <button class="page-link" type="submit"><span class="oi oi-arrow-left"></span> {% trans "Previous" %}</button>
+                            <button class="page-link" type="submit">
+                                <span class="oi oi-arrow-left"></span> {% trans "Previous" %}
+                            </button>
                         </form>
                     </li>
-                      {% else %}
-                        <li class="page-item disabled">
+                {% else %}
+                    <li class="page-item disabled">
                         <span class="page-link"><span class="oi oi-arrow-left"></span> {% trans "Previous" %}</span>
-                        </li>
-                      {% endif %}
-                      {% if records.next_offset != None %}
+                    </li>
+                {% endif %}
+                {% if records.next_offset != None %}
                     <li class="page-item">
                         <form action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
-                              {% csrf_token %}
-                              <input type="hidden"
-                                  value="{{ records.current_limit }}"
-                                  name="limit"
-                              >
-                              <input type="hidden"
-                                  value="{{ records.next_offset }}"
-                                  name="offset"
-                              >
-                              {% if order_by %}
-                                  <input type="hidden" value="{{ order_by }}" name="order_by">
-                                  {% if order %}
-                                      <input type="hidden" value="{{ order }}" name="order">
-                                  {% endif %}
-                              {% endif %}
-                              <button class="page-link" type="submit">{% trans "Next" %} <span class="oi oi-arrow-right"></span></button>
-                          </form>
+                            {% csrf_token %}
+                            <input type="hidden" name="limit" value="{{ records.current_limit }}">
+                            <input type="hidden" name="offset" value="{{ records.next_offset }}">
+                            {% if order_by %}
+                                <input type="hidden" name="order_by" value="{{ order_by }}">
+                                {% if order %}
+                                    <input type="hidden" name="order" value="{{ order }}">
+                                {% endif %}
+                            {% endif %}
+                            <button class="page-link" type="submit">
+                                {% trans "Next" %} <span class="oi oi-arrow-right"></span>
+                            </button>
+                        </form>
                     </li>
-                      {% else %}
-                        <li class="page-item disabled">
-                          <span class="page-link">{% trans "Next" %} <span class="oi oi-arrow-right"></span></span>
-                        </li>
-                      {% endif %}
-                  </ul>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">{% trans "Next" %} <span class="oi oi-arrow-right"></span></span>
+                    </li>
+                {% endif %}
+            </ul>
                 </nav>
                 {% if current_filters %}
                     <script type="text/javascript">
