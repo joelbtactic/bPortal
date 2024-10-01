@@ -2,10 +2,14 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}
-    {% if record %}
-        {{record.name|safe}}
+{% if record %}
+    {% if record.name == None %}
+        {{record.ref|safe}}
     {% else %}
-        {{ module_labels|get_label:module_key }}
+        {{record.name|safe}}
+    {% endif %}
+    {% else %}
+    {{ module_labels|get_label:module_key }}
     {% endif %}
 {% endblock %}
 {% load static %}
@@ -57,7 +61,11 @@
         <form class="card" action="{% url 'module_edit' module_key record.id %}" method="post">
             {% csrf_token %}
             <div class="card-header">
+                {% if record.name == None %}
+                    <b>{{record.ref|safe}}</b>
+                {% else %}
                     <b>{{record.name|safe}}</b>
+                {% endif %}
                 <a href="{% url 'module_detail' module_key record.id %}" class="btn btn-outline-primary btn-sm float-end ms-2">
                     <span class="fas fa-eye"></span> {% trans "View detail" %}
                 </a>
