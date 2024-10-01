@@ -3,7 +3,7 @@
 {% block title %}{% blocktrans with user=user.username %}{{user}} profile{% endblocktrans %}{% endblock %}
 {% block content %}
 
-<h2><span class="oi oi-person"></span> {% blocktrans with user=user.username %}Profile of <b>{{user}}</b>{% endblocktrans %}</h2><br>
+<h2><i class="fa-solid fa-user"></i> {% blocktrans with user=user.username %}Profile of <b>{{user}}</b>{% endblocktrans %}</h2><br>
 
 <div class="row">
     <div class="col-sm-2"><b>{% trans "Username" %}:</b></div>
