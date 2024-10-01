@@ -27,33 +27,33 @@
         <select class="form-select" name="invoice_template" id="invoice_template_for">
             <option value="">{% trans "- disabled -" %}</option>
             {% if aos_invoices_templates.entry_list %}
-                    {% for template in aos_invoices_templates.entry_list %}
-                        <option value="{{template.id}}" {% if invoice_template == template.id %}selected{% endif %}>{{template.name}}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
+                {% for template in aos_invoices_templates.entry_list %}
+                    <option value="{{ template.id }}" {% if invoice_template == template.id %}selected{% endif %}>{{ template.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
     </div>
     <div class="mb-3">
         <label for="contract_template_for" class="form-label">{% trans "Contract template" %}:</label>
         <select class="form-select" name="contract_template" id="contract_template_for">
-                <option value="">{% trans "- disabled -" %}</option>
-                {% if aos_contract_templates.entry_list %}
-                    {% for template in aos_contract_templates.entry_list %}
-                        <option value="{{template.id}}" {% if contract_template == template.id %}selected{% endif %}>{{template.name}}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
+            <option value="">{% trans "- disabled -" %}</option>
+            {% if aos_contract_templates.entry_list %}
+                {% for template in aos_contract_templates.entry_list %}
+                    <option value="{{ template.id }}" {% if contract_template == template.id %}selected{% endif %}>{{ template.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
     </div>
     <div class="mb-3">
         <label for="quote_template_for" class="form-label">{% trans "Quotes template" %}:</label>
         <select class="form-select" name="quote_template" id="quote_template_for">
-                <option value="">{% trans "- disabled -" %}</option>
-                {% if aos_quotes_templates.entry_list %}
-                    {% for template in aos_quotes_templates.entry_list %}
-                        <option value="{{template.id}}" {% if quote_template == template.id %}selected{% endif %}>{{template.name}}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
+            <option value="">{% trans "- disabled -" %}</option>
+            {% if aos_quotes_templates.entry_list %}
+                {% for template in aos_quotes_templates.entry_list %}
+                    <option value="{{ template.id }}" {% if quote_template == template.id %}selected{% endif %}>{{ template.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
     </div>
     <button type="submit" class="btn btn-primary"><span class="oi oi-circle-check"></span> {% trans "Save" %}</button>
 </form>
