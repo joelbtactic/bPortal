@@ -3,7 +3,11 @@
 {% load filters %}
 {% block title %}
     {% if record %}
+{% if record.name == None %}
+            {{record.ref|safe}}
+        {% else %}
         {{record.name|safe}}
+{% endif %}
     {% else %}
         {{ module_labels|get_label:module_key }}
     {% endif %}
@@ -42,10 +46,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
+{% if record.name == None %}
+                            <b>{{ record.ref|safe }}</b>
+                        {% else %}
                     <b>{{record.name|safe}}</b>
-                    {% if user_can_delete %}
-                        <div class="float-right ml-2">
-                            {% include "portal/module_remove.html" %}
+                        {% endif %}
                         </div>
 
                     <div class="button-group d-flex">
@@ -143,8 +148,10 @@
             </div>
             {% if module_key == 'Cases' %}
                 {% include "portal/module_detail_cases.html" %}
-            {% elif module_key == 'AOS_Invoices' or module_key == 'AOS_Quotes' or module_key == 'AOS_Contracts' %}
+            {% elif module_key == 'AOS_Quotes' or module_key == 'AOS_Contracts' %}
                 {% include "portal/module_detail_aos_quotes.html" %}
+{% elif module_key == 'AOS_Invoices' %}
+                {% include "portal/module_detail_dolibarr_lines.html" %}
             {% endif %}
         {% else %}
             <div class="alert alert-danger" role="alert">
