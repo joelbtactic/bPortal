@@ -14,7 +14,12 @@
 {% block content %}
 {% load filters %}
 
-    {% if unsupported_module %}
+    {% if invoice_permissons %}
+        <div class="alert alert-danger" role="alert">
+            {% blocktrans %}Your current user does not have permission to view the invoice.{% endblocktrans %}
+        </div>
+
+    {% elif unsupported_module %}
         <div class="alert alert-danger" role="alert">
             {% blocktrans with module=module_labels|get_label:module_key %}Error loading definition of {{module}} module.{% endblocktrans %}
         </div>
