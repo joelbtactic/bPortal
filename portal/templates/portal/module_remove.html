@@ -2,34 +2,32 @@
 {% load filters %}
 {% load static %}
 
-<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#remove_record_modal_{{record.id}}">
-    <span class="oi oi-trash"></span> {% trans "Remove" %}
+<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#remove_record_modal_{{record.id}}">
+    <i class="fas fa-trash-alt"></i> {% trans "Remove" %}
 </button>
 <!-- Modal -->
-<div class="modal fade" id="remove_record_modal_{{record.id}}" tabindex="-1" role="dialog" aria-labelledby="remove_record_modal_label_{{record.id}}" aria-hidden="true">
+<div class="modal fade" id="remove_record_modal_{{record.id}}" tabindex="-1" aria-labelledby="remove_record_modal_label_{{record.id}}" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="remove_record_modal_title_{{record.id}}">
             {% blocktrans with record_name=record.name|safe %}Remove <b>{{record_name}}</b>{% endblocktrans %}
         </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div class="alert alert-warning" role="alert">
-              <span class="oi oi-warning"></span> {% blocktrans with record_name=record.name|safe %}Are you sure to delete <b>{{record_name}}</b> ?{% endblocktrans %}
+              <i class="fas fa-exclamation-triangle"></i> {% blocktrans with record_name=record.name|safe %}Are you sure to delete <b>{{record_name}}</b>?{% endblocktrans %}
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
-        <button type="button" class="btn btn-outline-danger" onclick="remove_record('{{ module_key }}','{{record.id}}');"><span class="oi oi-trash"></span> {% trans "Remove" %}</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+        <button type="button" class="btn btn-outline-danger" onclick="remove_record('{{ module_key }}','{{record.id}}');"><i class="fas fa-trash-alt"></i> {% trans "Remove" %}</button>
       </div>
     </div>
   </div>
 </div>
-<div class="modal fade" id="notification_modal_{{record.id}}" tabindex="-1" role="dialog" aria-labelledby="notification_modal_title" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="notification_modal_{{record.id}}" tabindex="-1" aria-labelledby="notification_modal_title" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -37,10 +35,8 @@
             {% blocktrans with record_name=record.name|safe %}Remove <b>{{record_name}}</b>{% endblocktrans %}
         </h5>
       </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
     </div>
   </div>
 </div>
@@ -75,7 +71,7 @@
                         + response.responseJSON.error + '</div>'
                 );
                 $(this).find('.modal-footer').html(
-                    '<button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Ok" %}</button>'
+                    '<button type="button" class="btn btn-primary" data-bs-dismiss="modal">{% trans "Ok" %}</button>'
                 );
                 $(this).modal('show');
             });
