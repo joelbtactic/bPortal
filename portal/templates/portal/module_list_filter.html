@@ -35,71 +35,66 @@
                                 </select>
                             {% endif %}
                         </div>
-                    {% if def.type == 'datetimecombo' or def.type == 'datetime' or def.type == 'date' %}
-                        <div class="col" style="display: none;" id="filter_{{field}}_1_div">
-                            <input class="form-control"
-                                type="date"
-                                id="filter_{{field}}_1"
-                                name="{{field}}_1"
-                                {% with field1=field|stringformat:"s_1" %}
-                                    {% if field1 in current_filters %}
-                                        value="{{ current_filters|get:field1 }}"
-                                    {% endif %}
-                                {% endwith %}
-                            >
-                        </div>
-                        <div class="col" style="display: none;" id="filter_{{field}}_2_div">
-                            <input class="form-control"
-                                type="date"
-                                id="filter_{{field}}_2"
-                                name="{{field}}_2"
-                                {% with field2=field|stringformat:"s_2" %}
-                                    {% if field2 in current_filters %}
-                                        value="{{ current_filters|get:field2 }}"
-                                    {% endif %}
-                                {% endwith %}
-                            >
-                        </div>
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#filter_{{field}}").on("change", function() {
-                                    if (
-                                        this.value == "=" ||
-                                        this.value == "not_equal" ||
-                                        this.value == "greater_than" ||
-                                        this.value == "less_than"
-                                    ) {
-                                        $("#filter_{{field}}_1_div").show();
-                                    } else {
-                                        $("#filter_{{field}}_1_div").hide();
-                                    }
-                                    if (this.value == "between") {
-                                        $("#filter_{{field}}_1_div").show();
-                                        $("#filter_{{field}}_2_div").show();
-                                    } else {
-                                        $("#filter_{{field}}_2_div").hide();
-                                    }
-                                });
-                            });
-                        </script>
-                    {% endif %}
-                    {% if field in current_filters %}
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#filter_{{field}}")
-                                    .val(
-                                        {% if def.type == 'multienum' %}
-                                            {% with opts=current_filters|getlist:field %}
-                                                {{opts|get_list_str|safe}}
-                                            {% endwith %}
-                                        {% else %}
-                                            "{{ current_filters|get:field }}"
+                        {% if def.type == 'datetimecombo' or def.type == 'datetime' or def.type == 'date' %}
+                            <div class="col" style="display: none;" id="filter_{{field}}_1_div">
+                                <input class="form-control"
+                                    type="date"
+                                    id="filter_{{field}}_1"
+                                    name="{{field}}_1"
+                                    {% with field1=field|stringformat:"s_1" %}
+                                        {% if field1 in current_filters %}
+                                            value="{{ current_filters|get:field1 }}"
                                         {% endif %}
-                                    )
-                                    .change();
-                            });
-                        </script>
-                    {% endif %}
+                                    {% endwith %}
+                                >
+                            </div>
+                            <div class="col" style="display: none;" id="filter_{{field}}_2_div">
+                                <input class="form-control"
+                                    type="date"
+                                    id="filter_{{field}}_2"
+                                    name="{{field}}_2"
+                                    {% with field2=field|stringformat:"s_2" %}
+                                        {% if field2 in current_filters %}
+                                            value="{{ current_filters|get:field2 }}"
+                                        {% endif %}
+                                    {% endwith %}
+                                >
+                            </div>
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $("#filter_{{field}}").on("change", function() {
+                                        if (this.value == "=" || this.value == "not_equal" || this.value == "greater_than" || this.value == "less_than") {
+                                            $("#filter_{{field}}_1_div").show();
+                                        } else {
+                                            $("#filter_{{field}}_1_div").hide();
+                                        }
+                                        if (this.value == "between") {
+                                            $("#filter_{{field}}_1_div").show();
+                                            $("#filter_{{field}}_2_div").show();
+                                        } else {
+                                            $("#filter_{{field}}_2_div").hide();
+                                        }
+                                    });
+                                });
+                            </script>
+                        {% endif %}
+                        {% if field in current_filters %}
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $("#filter_{{field}}")
+                                        .val(
+                                            {% if def.type == 'multienum' %}
+                                                {% with opts=current_filters|getlist:field %}
+                                                    {{opts|get_list_str|safe}}
+                                                {% endwith %}
+                                            {% else %}
+                                                "{{ current_filters|get:field }}"
+                                            {% endif %}
+                                        )
+                                        .change();
+                                });
+                            </script>
+                        {% endif %}
                     </div>
                     {% if def.type == 'dynamicenum' %}
                         <script src="{% static 'portal/field_edit_dynamicenum.js' %}"></script>
