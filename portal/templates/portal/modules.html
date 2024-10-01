@@ -3,8 +3,9 @@
 {% block content %}
 
     {% if modules %}
+    <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-inverse">
+            <thead>
                 <tr>
                     <th>Module key</th>
                     <th>Module label</th>
@@ -19,8 +20,9 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
     {% else %}
-    <p>No modules available.</p>
+    <p class="text-muted">No modules available.</p>
     {% endif %}
 
 {% endblock %}
