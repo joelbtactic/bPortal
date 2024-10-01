@@ -168,6 +168,25 @@
                     >
                         {% if field in current_filters %}{{ current_filters|get:field }}{% endif %}
                     </textarea>
+                {% elif def.type == 'relate' %}
+                    <input data-control="relate_field" type="hidden" name="{{def.name}}">
+                    <select data-control="relate_field" name="{{def.id_name}}" id="{{def.id_name}}" class="form-select"{% if def.required %} required{% endif %}>
+                        <option value=""></option>
+                    </select>
+                    <script type="text/javascript">
+                        $.ajax({
+                            url: "{% url 'user_records' def.related_module %}",
+                            type: "GET"
+                        }).done(function(response) {
+                            response.records.forEach(option => {
+                                $("#{{def.id_name}}").append("<option value='" + option.id + "'>" + option.name + "</option>");
+                            });
+                            var selectedOptionId = "{{ current_filters|get:def.id_name }}";
+                            if (selectedOptionId) {
+                                $("#{{def.id_name}}").val(selectedOptionId).change();
+                            }
+                        });
+                    </script>
                 {% else %}
                     <input type="text"
                         class="form-control"
