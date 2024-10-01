@@ -24,7 +24,9 @@
                 <h1><img src="{% static module_img %}" width="44px"> {{ module_labels|get_label:module_key }}</h1>
             {% endwith %}
         </div>
-        <div class="col text-right">
+    </div>
+    <div class="row">
+        <div class="col text-end">
             <a href="{% url 'module_list' module_key %}" class="btn btn-primary"><span class="oi oi-list"></span> {% trans "List" %}</a>
         </div>
     </div>
@@ -49,55 +51,61 @@
     </div>
 {% endif %}
 
-    {% if module_fields %}
+{% if module_fields %}
 
-        {% if record %}
-            <form class="card" action="{% url 'module_edit' module_key record.id %}" method="post">
-                {% csrf_token %}
-                <div class="card-header">
+    {% if record %}
+        <form class="card" action="{% url 'module_edit' module_key record.id %}" method="post">
+            {% csrf_token %}
+            <div class="card-header">
                     <b>{{record.name|safe}}</b>
-                    <a href="{% url 'module_detail' module_key record.id %}" class="btn btn-outline-primary btn-sm float-right ml-2"><span class="oi oi-eye"></span> {% trans "View detail" %}</a>
-                </div>
-                <div class="card-body">
-                    <div class="container">
-            {% for row in module_fields %}
-                <div class="row mb-3">
-                {% for field in row %}
-                    <div class="col">
-                        {% if field %}
-                            <div class="row {% if field.required %} was-validated{% endif %}">
-                                {% if row|length == 1 %}
-                                    <div class="col-2 {% if field.required %} required{% endif %}">
-                                {% else %}
-                                    <div class="col-4 {% if field.required %} required{% endif %}">
-                                {% endif %}
-                                    <b>{{ field.label|safe }}:</b>
-                                </div>
-                                <div class="col">
-                                    {% with value=record|get:field.name %}
-                                        {% include "portal/field_edit_display.html" %}
-                                    {% endwith %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                </div>
-            {% endfor %}
-                        <button type="submit" class="btn btn-success mt-2 float-right"><span class="oi oi-circle-check"></span> {% trans "Save" %}</button>
-                        <a href="{% url 'module_detail' module_key record.id %}" class="btn btn-danger mt-2 float-right mr-2"><span class="oi oi-circle-x"></span> {% trans "Cancel" %}</a>
-                    </div>
-                </div>
-            </form>
-        {% else %}
-            <div class="alert alert-danger" role="alert">
-                {% trans "The requested record was not found." %}
+                <a href="{% url 'module_detail' module_key record.id %}" class="btn btn-outline-primary btn-sm float-end ms-2">
+                    <span class="fas fa-eye"></span> {% trans "View detail" %}
+                </a>
             </div>
-        {% endif %}
+            <div class="card-body">
+                <div class="container">
+                    {% for row in module_fields %}
+                        <div class="row mb-3">
+                            {% for field in row %}
+                                <div class="col">
+                                    {% if field %}
+                                        <div class="row {% if field.required %} was-validated{% endif %}">
+                                            {% if row|length == 1 %}
+                                                <div class="col-sm-2 {% if field.required %} required{% endif %}">
+                                            {% else %}
+                                                <div class="col-sm-4 {% if field.required %} required{% endif %}">
+                                            {% endif %}
+                                                <b>{{ field.label|safe }}:</b>
+                                            </div>
+                                            <div class="col-sm">
+                                                {% with value=record|get:field.name %}
+                                                    {% include "portal/field_edit_display.html" %}
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success mt-2 float-end">
+                        <span class="fas fa-check-circle"></span> {% trans "Save" %}
+                    </button>
+                    <a href="{% url 'module_detail' module_key record.id %}" class="btn btn-danger mt-2 me-2 float-end">
+                        <span class="fas fa-times-circle"></span> {% trans "Cancel" %}
+                    </a>
+                </div>
+            </div>
+        </form>
     {% else %}
         <div class="alert alert-danger" role="alert">
-            {% blocktrans with module=module_labels|get_label:module_key %}Module {{module}} has not defined the edit view.{% endblocktrans %}
+            {% trans "The requested record was not found." %}
         </div>
     {% endif %}
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        {% blocktrans with module=module_labels|get_label:module_key %}Module {{module}} has not defined the edit view.{% endblocktrans %}
+    </div>
+{% endif %}
 
 {% endblock %}
