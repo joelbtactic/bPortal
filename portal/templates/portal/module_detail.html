@@ -26,7 +26,10 @@
                 <h1><img src="{% static module_img %}" width="44px"> {{ module_labels|get_label:module_key }}</h1>
             {% endwith %}
         </div>
-        <div class="col text-right">
+
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-end">
             <a href="{% url 'module_list' module_key %}" class="btn btn-primary"><span class="oi oi-list"></span> {% trans "List" %}</a>
         </div>
     </div>
@@ -37,67 +40,82 @@
 
         {% if record %}
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
                     <b>{{record.name|safe}}</b>
                     {% if user_can_delete %}
                         <div class="float-right ml-2">
                             {% include "portal/module_remove.html" %}
                         </div>
-                    {% endif %}
-                    {% if user_can_edit %}
-                        <a href="{% url 'module_edit' module_key record.id %}" class="btn btn-outline-primary btn-sm float-right ml-2"><span class="oi oi-pencil"></span> {% trans "Edit" %}</a>
-                    {% endif %}
+
+                    <div class="button-group d-flex">
                     {% if module_key == 'Cases' %}
                         {% if record.state != 'Closed' %}
-                            <form class="float-right ml-2" method="post" action="{% url 'close_case' %}">
+                                <form method="post" action="{% url 'close_case' %}" class="me-2">
                                 {% csrf_token %}
                                 <input type="hidden" value="{{ record.id }}" name="case-id">
-                                <button type="submit" class="btn btn-outline-danger btn-sm float-right ml-2"><span class="oi oi-task"></span> {% trans "Close" %}</button>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-times"></i> {% trans "Close" %}
+                                    </button>
                             </form>
                         {% else %}
-                            <form class="float-right ml-2" method="post" action="{% url 'reopen_case' %}">
+                                <form method="post" action="{% url 'reopen_case' %}" class="me-2">
                                 {% csrf_token %}
                                 <input type="hidden" value="{{ record.id }}" name="case-id">
-                                <button type="submit" class="btn btn-outline-success btn-sm float-right ml-2"><span class="oi oi-aperture"></span> {% trans "Reopen" %}</button>
+                                    <button type="submit" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-redo"></i> {% trans "Reopen" %}
+                                    </button>
                             </form>
                         {% endif %}
                     {% endif %}
+                
+                        {% if user_can_edit %}
+                            <a href="{% url 'module_edit' module_key record.id %}" class="btn btn-outline-primary btn-sm me-2">
+                                <i class="fas fa-pencil-alt"></i> {% trans "Edit" %}
+                            </a>
+                        {% endif %}
+                        {% if user_can_delete %}
+                            <div class="float-right ml-2">
+                                {% include "portal/module_remove.html" %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
+
                 <div class="card-body">
                     <div class="container">
             {% for row in module_fields %}
-                <div class="row pb-2 pt-2">
+                            <div class="row mb-3">
                 {% for field in row %}
                     <div class="col">
                         {% if field %}
                             <div class="row">
                                 {% if row|length == 1 %}
-                                    <div class="col-2">
+                                                    <div class="col-sm-2">
                                 {% else %}
-                                    <div class="col-4">
+                                                    <div class="col-sm-4">
                                 {% endif %}
                                     <b>{{ field.label|safe }}:</b>
                                 </div>
-                                <div class="col">
+                                                <div class="col-sm">
                                     {% with value=record|get:field.name %}
                                         {% if field.type == 'enum' or field.type == 'dynamicenum' %}
                                             {{field.options|get:value|get:"value"}}
                                         {% elif field.type == 'multienum' %}
+                                                            <ul class="list-unstyled">
                                             {% with selected_values=value|unencode_multienum %}
                                                 {% for selected_value in selected_values %}
                                                     <li>{{field.options|get:selected_value|get:"value"}}</li>
                                                 {% endfor %}
                                             {% endwith %}
+                                                            </ul>
                                         {% elif field.type == 'radioenum' %}
                                             {{field.options|get:value|get:"value"}}
                                         {% elif field.type == 'bool' %}
-                                            <input class="checkbox"
-                                                id="{{ field }}"
-                                                disabled="true"
-                                                {% if value == '1' %}
-                                                    checked="checked"
-                                                {% endif %}
+                                                            <input class="form-check-input"
                                                 type="checkbox"
+                                                                disabled
+                                                                {% if value == '1' %} checked="checked" {% endif %}
                                             >
                                         {% elif field.type == 'date' %}
                                             {{ value|format_date }}
