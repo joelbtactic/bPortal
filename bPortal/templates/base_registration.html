@@ -1,7 +1,11 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
     {% load static %}
+  {% load pwa %}
+  {% progressive_web_app_meta %}
+  <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" type="text/css" href="{% static 'portal/bootstrap.min.css' %}" />
   <script src="{% static 'portal/jquery-3.6.4.min.js' %}"></script>
     <script src="{% static 'portal/tether.min.js' %}"></script>
@@ -9,14 +13,61 @@
     <script src="{% static 'portal/popper.min.js' %}"></script>
     <script src="{% static 'portal/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'bPortal/registration.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'portal/popup-offline.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'portal/jquery-ui.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'portal/iconic/font/css/open-iconic-bootstrap.css' %}" />
     {% block static_files %}{% endblock %}
     <title>{% block title %}bPortal{% endblock %}</title>
-    {% block favicon %}<link rel="shortcut icon" href="{% static 'portal/img/icons/favicon/favicon.ico' %}">{% endblock %}
+  {% block favicon %}
+  <link rel="shortcut icon" href="{% static 'portal/img/icons/favicon/favicon.ico' %}">{% endblock %}
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/serviceworker.js')
+        .then(function (registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        }).catch(function (error) {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+    // Listen for the 'offline' event
+    window.addEventListener('offline', function () {
+      const popup = document.getElementById('offline-notification');
+      popup.classList.toggle("show");
+
+
+      // Hide the popup after 3 seconds
+      setTimeout(() => {
+        popup.classList.remove('show'); // Remove show class for fade out
+      }, 3000); // Show for 3 seconds      // You can replace the alert with a more sophisticated popup
+    });
+
+    // Handle link clicks
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('button, a').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          if (!navigator.onLine) {
+            event.preventDefault();  // Prevent the default link behavior
+            const popup = document.getElementById('offline-notification');
+            popup.classList.toggle("show");
+
+
+            // Hide the popup after 3 seconds
+            setTimeout(() => {
+              popup.classList.remove('show'); // Remove show class for fade out
+            }, 3000); // Show for 3 seconds
+          }
+        });
+      });
+    });
+  </script>
+
 </head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body>
+  <div class="popup">
+      <span class="popuptext" id="offline-notification">{% trans "You are currently offline. Some features may not be available." %}</span>
+  </div>
 
    <div class="container">
        <div class="row justify-content-md-center">
