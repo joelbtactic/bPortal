@@ -212,3 +212,7 @@ msgstr "Direcció de correu electrònic:"
 #: templates/registration/password_reset_form.html:17
 msgid "Reset my password"
 msgstr "Restablir la contrasenya"
+
+#: templates/base_registration.html:69
+msgid "You are currently offline. Some features may not be available."
+msgstr "Actualment estàs desconnectat. Algunes funcions poden no estar disponibles."
