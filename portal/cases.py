@@ -20,6 +20,7 @@
 
 from suitepy.suitecrm import SuiteCRM
 from .utils import *
+from portal.suitecrm_api_service import SuiteCRMManager
 
 NOTE_FIELDS = [
     'id',
@@ -65,7 +66,8 @@ USER_FIELDS = [
 
 
 def get_case(case_id):
-    return SuiteCRM().get_bean(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean(
         'Cases',
         case_id,
         link_name_to_fields_array=[
@@ -82,7 +84,8 @@ def get_case(case_id):
 
 
 def get_case_update(case_update_id):
-    return SuiteCRM().get_bean(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean(
         'AOP_Case_Updates',
         case_update_id,
         link_name_to_fields_array=[
@@ -103,7 +106,8 @@ def get_case_update(case_update_id):
 
 
 def get_case_updates(case_id):
-    return SuiteCRM().get_relationships(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_relationships(
         'Cases',
         case_id,
         'aop_case_updates',
