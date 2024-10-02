@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
+from portal.suitecrm_api_service import SuiteCRMManager
 from suitepy.suitecrm import SuiteCRM
 
 AOS_PRODUCTS_QUOTES_FIELDS = [
@@ -36,7 +37,8 @@ AOS_PRODUCTS_QUOTES_FIELDS = [
 
 
 def get_aos_quotes_record(module, id):
-    return SuiteCRM().get_bean(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean(
         module,
         id,
         link_name_to_fields_array=[
