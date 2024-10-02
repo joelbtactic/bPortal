@@ -4,8 +4,8 @@
 {% block content %}
 
     <div class="alert alert-success" role="alert">
-      {% trans "You have been logged out." %}
+        {% trans "You have been logged out." %}
     </div>
-    <a href="{% url 'login'%}">{% trans "Click here to login again." %}</a>
+    <a href="{% url 'login' %}" class="btn btn-primary mt-2">{% trans "Click here to login again." %}</a>
 
 {% endblock %}
