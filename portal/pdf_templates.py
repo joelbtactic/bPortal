@@ -20,6 +20,7 @@
 
 from suitepy.suitecrm import SuiteCRM
 from .models import PortalSetting
+from portal.suitecrm_api_service import SuiteCRMManager
 
 AOS_PDF_TEMPLATES_FIELDS = [
     'id',
@@ -29,7 +30,8 @@ AOS_PDF_TEMPLATES_FIELDS = [
 
 
 def get_aos_invoices_pdf_templates():
-    return SuiteCRM().get_bean_list(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean_list(
         'AOS_PDF_Templates',
         filter="aos_pdf_templates.type = 'AOS_Invoices'",
         fields=AOS_PDF_TEMPLATES_FIELDS
@@ -37,7 +39,8 @@ def get_aos_invoices_pdf_templates():
 
 
 def get_aos_quotes_pdf_templates():
-    return SuiteCRM().get_bean_list(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean_list(
         'AOS_PDF_Templates',
         filter="aos_pdf_templates.type = 'AOS_Quotes'",
         fields=AOS_PDF_TEMPLATES_FIELDS
@@ -45,7 +48,8 @@ def get_aos_quotes_pdf_templates():
 
 
 def get_aos_contracts_pdf_templates():
-    return SuiteCRM().get_bean_list(
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    return suitecrm_instance.get_bean_list(
         'AOS_PDF_Templates',
         filter="aos_pdf_templates.type = 'AOS_Contracts'",
         fields=AOS_PDF_TEMPLATES_FIELDS
