@@ -6,49 +6,51 @@
 {% if next %}
     {% if user.is_authenticated %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <span class="oi oi-warning"></span>
+            <i class="fas fa-exclamation-triangle"></i> 
             {% trans "Your account doesn't have access to this page. To proceed, please login with an account that has access." %}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% else %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <span class="oi oi-warning"></span>
+            <i class="fas fa-exclamation-triangle"></i>
             {% trans "Please login to see this page." %}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
 {% endif %}
-<div class="card">
-    <h5 class="card-header">{% trans "Please sign in" %}</h5>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 400px; width: 100%;">
+        <h5 class="card-header text-center text-white" style="background-color: orange;">{% trans "Please sign in" %}</h5>
     <div class="card-body">
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div class="form-group">
+                <div class="mb-3">
                 {{ form.username.label_tag }}
                 <input type="text" class="form-control{% if form.errors %} is-invalid{% endif %}"
-                    placeholder="Enter username" name="username" autofocus="" required=""
+                        placeholder="Enter username" name="username" autofocus required
                     id="id_username" tabindex="1"
                 >
             </div>
-            <div class="form-group">
-                <div class="float-left">
+                <div class="mb-3">
+                    <div>
                     {{ form.password.label_tag }}
                 </div>
-                <div class="float-right">
+                    
+                    <input type="password" class="form-control{% if form.errors %} is-invalid{% endif %}"
+                        name="password" required id="id_password" placeholder="{% trans "Password" %}" tabindex="2"
+                    >
+                    <div class="text-end">
                     <a href="{% url 'password_reset' %}" tabindex="4">{% trans "Lost password?" %}</a>
                 </div>
-                <input type="password" class="form-control{% if form.errors %} is-invalid{% endif %}"
-                    name="password" required="" id="id_password" placeholder="Password" tabindex="2"
-                >
                 <div class="invalid-feedback">{% trans "Your username and password didn't match. Please try again." %}</div>
             </div>
             <input type="hidden" name="next" value="{{ next }}" />
-            <button type="submit" class="btn btn-primary" tabindex="3"><span class="oi oi-account-login"></span> {% trans "Login" %}</button>
+                <button type="submit" class="btn text-white w-100" style="background-color: orange;" tabindex="3">
+                    <span class="oi oi-account-login"></span> {% trans "Login" %}
+                </button>
         </form>
+        </div>
     </div>
 </div>
 
