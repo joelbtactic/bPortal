@@ -105,8 +105,24 @@ def get_case_update(case_update_id):
     )
 
 
-def get_case_updates(case_id):
+def get_case_updates(case_id, arguments):
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    # The case updates now have a pagination control and it loads by default the last page.
+    limit = arguments.get('limit')
+    if limit:
+        limit = int(limit)
+    else:
+        limit = 5
+    offset = arguments.get('offset')
+    if offset:
+        offset = int(offset)
+    else:
+        offset = 1
+    last_page_control = arguments.get('last_page_control')
+    if last_page_control:
+        last_page_control = False
+    if last_page_control == None:
+        last_page_control = True
     return suitecrm_instance.get_relationships(
         'Cases',
         case_id,
@@ -126,7 +142,10 @@ def get_case_updates(case_id):
             }
         ],
         order_by='date_entered',
-        filter='aop_case_updates.internal = 0'
+        filter='aop_case_updates.internal = 0',
+        limit=limit,
+        offset=offset,
+        last=last_page_control
     )
 
 
