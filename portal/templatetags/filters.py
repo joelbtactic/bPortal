@@ -71,9 +71,12 @@ def decode(value):
 @register.filter(name='format_date')
 def format_date(value):
     try:
-        # Translators: Format for date fields following python date format.
-        return datetime.strptime(value, settings.SUITECRM_DATE_FORMAT)\
-            .strftime(_('%d/%m/%Y'))
+        # Convert Unix timestamp to a datetime object
+        dt = datetime.fromtimestamp(value)
+
+        # Convert the datetime to your desired format
+        formatted_date = dt.strftime("%Y-%m-%d")
+        return formatted_date
     except Exception:
         return value
 
