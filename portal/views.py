@@ -209,9 +209,13 @@ def module_detail(request, module, id):
         template = loader.get_template('portal/module_detail.html')
         try:
             if module == 'Cases':
+                if request.method == "POST":
+                    arguments = request.POST
+                else:
+                    arguments = request.GET
                 record = get_case(id)
                 context.update({
-                    'case_updates': get_case_updates(id)
+                    'case_updates': get_case_updates(id, arguments)
                 })
             elif module == 'AOS_Invoices' or module == 'AOS_Quotes' or module == 'AOS_Contracts':
                 record = get_aos_quotes_record(module, id)
