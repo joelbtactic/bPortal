@@ -22,34 +22,34 @@
 <div class="container d-flex justify-content-center align-items-center">
     <div class="card shadow-lg border-0 rounded-4" style="max-width: 400px; width: 100%;">
         <h5 class="card-header text-center text-white" style="background-color: orange;">{% trans "Please sign in" %}</h5>
-    <div class="card-body">
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
+        <div class="card-body">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
                 <div class="mb-3">
-                {{ form.username.label_tag }}
-                <input type="text" class="form-control{% if form.errors %} is-invalid{% endif %}"
+                    {{ form.username.label_tag }}
+                    <input type="text" class="form-control{% if form.errors %} is-invalid{% endif %}"
                         placeholder="Enter username" name="username" autofocus required
-                    id="id_username" tabindex="1"
-                >
-            </div>
+                        id="id_username" tabindex="1"
+                    >
+                </div>
                 <div class="mb-3">
                     <div>
-                    {{ form.password.label_tag }}
-                </div>
+                        {{ form.password.label_tag }}
+                    </div>
                     
                     <input type="password" class="form-control{% if form.errors %} is-invalid{% endif %}"
                         name="password" required id="id_password" placeholder="{% trans "Password" %}" tabindex="2"
                     >
                     <div class="text-end">
-                    <a href="{% url 'password_reset' %}" tabindex="4">{% trans "Lost password?" %}</a>
+                        <a href="{% url 'password_reset' %}" tabindex="4">{% trans "Lost password?" %}</a>
+                    </div>
+                    <div class="invalid-feedback">{% trans "Your username and password didn't match. Please try again." %}</div>
                 </div>
-                <div class="invalid-feedback">{% trans "Your username and password didn't match. Please try again." %}</div>
-            </div>
-            <input type="hidden" name="next" value="{{ next }}" />
+                <input type="hidden" name="next" value="{{ next }}" />
                 <button type="submit" class="btn text-white w-100" style="background-color: orange;" tabindex="3">
                     <span class="oi oi-account-login"></span> {% trans "Login" %}
                 </button>
-        </form>
+            </form>
         </div>
     </div>
 </div>
