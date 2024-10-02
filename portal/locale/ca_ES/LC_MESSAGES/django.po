@@ -525,10 +525,15 @@ msgstr "Veure detall"
 msgid "Module %(module)s has not defined the edit view."
 msgstr "El mòdul %(module)s no té definida la vista edició."
 
-#: templates/portal/module_list.html:19
+#: templates/portal/module_list.html:24
 #, python-format
 msgid "Error loading definition of %(module)s module."
 msgstr "Error al carregar la definició del mòdul %(module)s."
+
+#: templates/portal/module_list.html:19
+#, python-format
+msgid "Your current user does not have permission to view the invoice."
+msgstr "El teu usuari actual no té permís per veure la factura."
 
 #: templates/portal/module_list.html:201 templates/portal/module_list.html:205
 msgid "Previous"
@@ -735,3 +740,7 @@ msgstr "S'ha produït un error en actualitzar les preferències."
 #: views.py:943
 msgid "Error while retrieving document."
 msgstr "S'ha produït un error al recuperar el document."
+
+#: templates/portal/basepage.html:123
+msgid "You are currently offline. Some features may not be available."
+msgstr "Actualment estàs desconnectat. Algunes funcions poden no estar disponibles."

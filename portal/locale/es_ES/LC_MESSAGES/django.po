@@ -527,6 +527,11 @@ msgstr "El módulo %(module)s no tiene definida la vista edición."
 
 #: templates/portal/module_list.html:19
 #, python-format
+msgid "Your current user does not have permission to view the invoice."
+msgstr "Tu usuario actual no tiene permiso para ver la factura."
+
+#: templates/portal/module_list.html:24
+#, python-format
 msgid "Error loading definition of %(module)s module."
 msgstr "Error al cargar la definición del módulo %(module)s."
 
@@ -735,3 +740,7 @@ msgstr "Error al actualizar las preferencias."
 #: views.py:943
 msgid "Error while retrieving document."
 msgstr "Error al recuperar el documento."
+
+#: templates/portal/basepage.html:123
+msgid "You are currently offline. Some features may not be available."
+msgstr "Actualmente estás desconectado. Algunas funciones pueden no estar disponibles."
