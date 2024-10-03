@@ -2,6 +2,7 @@ from portal.suitecrm_api_service import SuiteCRMManager
 from .models import Layout
 from dolibarrpy.dolibarrpy_service import DolibarrApiService
 from dolibarrpy.dolibarrpy_service_cached import DolibarrApiServiceCached
+import logging
 
 from collections import OrderedDict
 import json
@@ -9,6 +10,8 @@ from .module_definitions import *
 from .utils_datetime import *
 
 class DolibarrUtils:
+
+    _logger = logging.getLogger('bPortal')
 
     def __init__(self) -> None:
         self.dolibarr_service = DolibarrApiService()
@@ -98,7 +101,7 @@ class DolibarrUtils:
                 records = self._retrieve_records(module_def, related_module, related_id, arguments, filterable_fields, ordered_module_fields)
 
             except Exception as e:
-                print(e)
+                self._logger.error(f"[DolibarrUtils] Retrieve list view records error: {e}")
         else:
             return {
                 'module_key': module,
