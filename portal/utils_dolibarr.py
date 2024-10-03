@@ -63,3 +63,21 @@ class DolibarrUtils:
         account_id = dolibarr_account['entry_list'][0]['id']
 
         return account_id
+
+
+    def get_filter_layout(self, module, module_def):
+        try:
+
+            ordered_module_fields = OrderedDict()
+            view = Layout.objects.get(module=module, view='filter')
+            fields_list = json.loads(view.fields)
+            if module_def.dolibarr_extrafield:
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+            else:
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+            for field in fields_list:
+                if field in module_fields:
+                    ordered_module_fields[field] = module_fields[field]
+            return ordered_module_fields
+        except Exception:
+            return OrderedDict()
