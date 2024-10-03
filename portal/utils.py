@@ -924,10 +924,10 @@ def relate_bean_with_contact(bean, contact_id):
             suitecrm_instance.save_bean(bean)
         elif module_def.contacts_link_type == LinkType.RELATIONSHIP:
             result = suitecrm_instance.set_relationship(
-                'Contacts',
-                contact_id,
                 module,
-                related_ids=[bean['id']]
+                bean['id'],
+                'Contacts',
+                related_ids=[contact_id]
             )
             if result['created'] != 1:
                 return False
