@@ -132,6 +132,35 @@ class DolibarrUtils:
         except Exception:
             return OrderedDict()
 
+    def get_view_layout(self, module, view_type):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+        try:
+
+            ordered_module_fields = []
+            view = Layout.objects.get(module=module, view=view_type)
+            fields_list = json.loads(view.fields)
+            if module_def.dolibarr_extrafield:
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+            else:
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+            for row in fields_list:
+                row_fields = []
+                for field in row:
+                    if field in module_fields:
+                        row_fields.append(module_fields[field])
+                    elif not field:
+                        row_fields.append(None)
+                ordered_module_fields.append(row_fields)
+        except Exception:
+            pass
+        return ordered_module_fields
+
     def get_ordered_fields(self, module, module_def):
         ordered_module_fields = OrderedDict()
         module_fields = {}
