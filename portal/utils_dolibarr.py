@@ -300,3 +300,18 @@ class DolibarrUtils:
             pass
         return False
 
+    def get_pdf(self, module, id):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+
+        bean = self.dolibarr_service.get_record_by_id(
+            module_def.dolibarr_name,
+            id)
+        doc_path = bean['last_main_doc']
+        return self.dolibarr_service.get_document_pdf(module_def.dolibarr_extrafields_module, doc_path)
+
