@@ -81,3 +81,27 @@ class DolibarrUtils:
             return ordered_module_fields
         except Exception:
             return OrderedDict()
+
+    def get_ordered_fields(self, module, module_def):
+        ordered_module_fields = OrderedDict()
+        module_fields = {}
+
+        view = Layout.objects.get(module=module, view='list')
+
+        fields_list = json.loads(view.fields)
+
+        if module_def.dolibarr_extrafield:
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+        else:
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+
+        for field in fields_list:
+            if field in module_fields:
+                ordered_module_fields[field] = module_fields[field]
+        self.set_sortable_atribute_on_module_fields(module_fields)
+
+        return ordered_module_fields
+
+    def set_sortable_atribute_on_module_fields(self, module_fields):
+        for _, field_def in module_fields.items():
+            field_def['sortable'] = True
