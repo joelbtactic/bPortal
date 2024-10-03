@@ -116,6 +116,7 @@ def get_filter_parent(module, parent_type, parent_id):
 def get_filter_query(module, fields, parameters):
     table = module.lower()
     query = ''
+    related_query = None
     for field_name, field_def in fields.items():
         if field_name in parameters and parameters[field_name]:
             field_table = table if field_name[-2:] != '_c' else table + '_cstm'
@@ -151,6 +152,25 @@ def get_filter_query(module, fields, parameters):
                 if query:
                     query += " AND "
                 query += field_table + '.' + field_name + ' like ' + value
+            elif field_type == 'relate':
+                if field_def['id_name'] == 'contact_created_by_id':
+                    value = '\'' + parameters[field_def['id_name']] + '\''
+                    if query:
+                        query += " AND "
+                    query += field_table + '.' + field_def['id_name'] + ' = ' + value
+                else:
+                    link_name = field_def.get('link') or module.lower()
+                    related_query = {
+                        'related_module' : field_def['related_module'],
+                        'related_id': parameters[field_def['id_name']],
+                        'link_name' : link_name
+                    }
+            elif field_type == 'link':
+                related_query = {
+                        'related_module' : field_def['related_module'],
+                        'related_id': parameters[field_def['name']],
+                        'link_name' : field_def['relationship']
+                }
             else:
                 if field_type in ['double', 'float', 'decimal', 'int', 'bool']:
                     value = parameters[field_name]
@@ -159,7 +179,7 @@ def get_filter_query(module, fields, parameters):
                 if query:
                     query += " AND "
                 query += field_table + '.' + field_name + ' = ' + value
-    return query
+    return query, related_query
 
 
 def get_listview_filter(parameters):
@@ -192,7 +212,7 @@ NON_FILTERABLE_FIELD_TYPES = [
     'html',
     'text',
     'encrypt',
-    'relate',
+    # 'relate',
     'assigned_user_name',
     'id'
 ]
@@ -334,8 +354,20 @@ def retrieve_list_view_records(module, arguments, user):
             order_by_string += ' ' + order
         else:
             order = None
-        filter_query = get_filter_query(module, filterable_fields, arguments)
-        if link_type == LinkType.RELATED:
+        filter_query, related_query = get_filter_query(module, filterable_fields, arguments)
+        if related_query != None:
+            records = suitecrm_instance.get_relationships(
+                related_query['related_module'],
+                related_query['related_id'],
+                related_query['link_name'],
+                only_relationship_fields=True,
+                offset=offset,
+                limit=limit,
+                filter=filter_query,
+                order_by=order_by,
+                order=order
+            )
+        elif link_type == LinkType.RELATED:
             if filter_query:
                 filter_query += " AND "
             filter_query += get_filter_related(
