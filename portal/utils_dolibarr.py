@@ -264,3 +264,19 @@ class DolibarrUtils:
             filter_value = filter_value.replace(")", "_")
 
         return filter_value
+
+    def get_dolibarr_record(self, module, id, action=None):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+
+        return self.dolibarr_service.get_record_by_id(
+            module_def.dolibarr_name,
+            id,
+            action
+        )
+
