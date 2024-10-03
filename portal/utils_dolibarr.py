@@ -102,6 +102,86 @@ class DolibarrUtils:
 
         return ordered_module_fields
 
+    def _retrieve_records(self, module_def, related_module, related_id, arguments, filterable_fields, fields_list):
+        account_id = self.get_dol_account_id(module_def.dolibarr_account_link_name, related_module, related_id)
+        filter_dolibarr = self.get_filter_query(module_def, filterable_fields, arguments, account_id, fields_list)
+        records = self.dolibarr_service.get_all_records(module_def.dolibarr_name, filter_dolibarr)
+        return records
+
     def set_sortable_atribute_on_module_fields(self, module_fields):
         for _, field_def in module_fields.items():
             field_def['sortable'] = True
+
+    def get_filter_query(self, module_def, fields:dict, arguments, account_id, fields_list):
+        order_by = arguments.get('order_by')
+        order = arguments.get('order')
+        limit = arguments.get('limit')
+        offset = arguments.get('offset')
+
+        prefix_filter, order_name = self._get_prefix_filter_field(fields_list, order_by)
+        filter_dolibarr = {
+            module_def.dolibarr_account_filter: account_id
+        }
+        if order_name != None:
+            filter_dolibarr['sortfield'] = prefix_filter + order_name
+        if order != None:
+            filter_dolibarr['sortorder'] = order
+        if limit:
+            filter_dolibarr['limit']  = int(limit)
+        if offset:
+            filter_dolibarr['page']  = int(offset)
+
+        sqlfilters = ''
+        for field_name, field_def in fields.items():
+            if field_name in arguments and arguments[field_name]:
+                parameter = self.remove_special_char(arguments[field_name])
+                if field_def['type'] in ['date', 'datetime', 'datetimecombo']:
+                    date_filter_params = []
+                    if field_name + '_1' in arguments:
+                        date_filter_params.append(arguments[field_name + '_1'])
+                        if field_name + '_2' in arguments:
+                            date_filter_params.append(
+                                arguments[field_name + '_2']
+                            )
+                    if 'sqlname' in field_def and field_def['sqlname']:
+                        field_sqlname = field_def['sqlname']
+                    else:
+                        field_sqlname = field_name
+                    sqlfilters += doli_get_datetime_option_in_mysql_format(
+                        arguments[field_name],
+                        field_sqlname,
+                        date_filter_params
+                    )
+
+                else:
+                    if 'sqlname' in field_def and field_def['sqlname']:
+                        field_name = field_def['sqlname']
+
+                    if 'extrafield' in field_def and field_def['extrafield']:
+                        sqlfilters += f"(ef.{field_name}:like:'{parameter}') and "
+
+                    else:
+                        sqlfilters += f"(t.{field_name}:like:'{parameter}') and "
+
+        if sqlfilters != '':
+            filter_dolibarr['sqlfilters'] = sqlfilters[0:-4]
+        return filter_dolibarr
+
+    def _get_prefix_filter_field(self, fields, order_name):
+        prefix_filter = 't.'
+        if order_name in fields:
+            field_def = fields[order_name]
+            if 'sqlname' in field_def and field_def['sqlname']:
+                order_name = field_def['sqlname']
+
+            if 'extrafield' in field_def and field_def['extrafield']:
+                prefix_filter = 'ef.'
+
+        return prefix_filter, order_name
+
+    def remove_special_char(self, filter_value):
+        if "(" in filter_value:
+            filter_value = filter_value.replace("(", "_")
+            filter_value = filter_value.replace(")", "_")
+
+        return filter_value
