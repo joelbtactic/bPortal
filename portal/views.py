@@ -966,3 +966,6 @@ def get_pdf(request, module, id):
     else:
         template = loader.get_template('portal/insufficient_permissions.html')
         return HttpResponse(template.render(context, request))
+
+def offline(request):
+    return render(request, 'portal/offline.html')
