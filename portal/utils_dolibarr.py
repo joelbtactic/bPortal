@@ -26,3 +26,22 @@ class DolibarrUtils:
             if not filters[key]:
                 del filters[key]
         return filters
+
+    def get_module_fields_dolibarr(self, module):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+
+        if module_def.dolibarr_extrafield:
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+        else:
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+
+        filterable_fields = OrderedDict()
+        for field_name, field_def in module_fields.items():
+            filterable_fields[field_name] = field_def
+        return filterable_fields
