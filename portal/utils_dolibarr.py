@@ -339,3 +339,36 @@ class DolibarrUtils:
                     params_update[field_name] = field_value
         return self.dolibarr_service.save_record(module_def.dolibarr_name, id, params_update)
 
+    def get_bean_from_post(self, module, user, data):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+            user_type = user.userattr.user_type
+
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+        if (user_type == 'account'
+                and module_def.accounts_link_type != LinkType.CONTACT) \
+                or module_def.contacts_link_type == LinkType.ACCOUNT:
+            related_module = 'Accounts'
+            related_id = user.userattr.account_id
+        else:
+            return None
+
+        account_id = self.get_dol_account_id(module_def.dolibarr_account_link_name, related_module, related_id)
+        module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+
+        params_update = {
+            "array_options": {}
+        }
+        for field_name, field_value in data.items():
+            if field_name in module_fields:
+                if 'extrafield' in module_fields[field_name]:
+                    params_update["array_options"]["options_" + field_name] = field_value
+                else:
+                    params_update[field_name] = field_value
+        params_update['socid'] = account_id
+
+        return self.dolibarr_service.create_record(module_def.dolibarr_name, params_update)
