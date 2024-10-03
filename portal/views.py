@@ -43,6 +43,7 @@ from .pdf_templates import *
 import base64
 from django.http import Http404
 from django.urls import reverse
+from .suitecrm_api_service import SuiteCRMManager
 
 # Create your views here.
 
@@ -203,6 +204,7 @@ def user_records(request, module):
 @login_required
 def module_detail(request, module, id):
     context = basepage_processor(request)
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     record = None
     ordered_module_fields = get_module_view_fields(module, 'detail')
     if user_can_read_module(request.user, module) and user_can_read_record(request.user, module, id):
@@ -223,7 +225,7 @@ def module_detail(request, module, id):
                     'pdf_template_enabled': True if get_pdf_template_id(module) else None
                 })
             else:
-                record = SuiteCRM().get_bean(module, id)
+                record = suitecrm_instance.get_bean(module, id)
         except Exception:
             pass
         context.update({
@@ -240,6 +242,7 @@ def module_detail(request, module, id):
 
 @login_required
 def module_remove_record(request, module):
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if request.method == 'POST' and 'id' in request.POST:
         id = request.POST['id']
         if user_can_delete_module(request.user, module) \
@@ -248,7 +251,7 @@ def module_remove_record(request, module):
             bean['id'] = id
             bean['deleted'] = 1
             try:
-                SuiteCRM().save_bean(bean)
+                suitecrm_instance.save_bean(bean)
                 return JsonResponse({
                     "status": "Success",
                     "msg": _("Record deleted successfully.")
@@ -280,6 +283,7 @@ def module_remove_record(request, module):
 
 def create_case_add_attachments(request, bean_case):
     try:
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         files = request.FILES.getlist('update-case-attachment')
         if files:
             case_update = Bean('AOP_Case_Updates')
@@ -288,7 +292,7 @@ def create_case_add_attachments(request, bean_case):
             case_update['name'] = bean_case['description'][:45]
             case_update['description'] = bean_case['description'].replace('\n', '<br>')
             case_update['internal'] = 0
-            SuiteCRM().save_bean(case_update)
+            suitecrm_instance.save_bean(case_update)
             if case_update['id']:
                 for f in files:
                     file_content = f.read()
@@ -300,7 +304,7 @@ def create_case_add_attachments(request, bean_case):
                     note['parent_id'] = case_update['id']
                     note['contact_id'] = request.user.userattr.contact_id
                     note['filecontents'] = encoded.decode()
-                    SuiteCRM().save_bean(note)
+                    suitecrm_instance.save_bean(note)
                     if note['id']:
                         pass
                     return True
@@ -312,6 +316,7 @@ def create_case_add_attachments(request, bean_case):
 @login_required
 def module_create(request, module):
     context = basepage_processor(request)
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     ordered_module_fields = get_module_view_fields(module, 'create')
     if user_can_create_module(request.user, module):
         template = loader.get_template('portal/module_create.html')
@@ -323,7 +328,7 @@ def module_create(request, module):
                     module_def.before_save_on_create_hook(bean, request)
                 except Exception:
                     pass
-                SuiteCRM().save_bean(bean)
+                suitecrm_instance.save_bean(bean)
                 relate_result = relate_bean_with_user(bean, request.user)
                 context.update(relate_result)
                 context.update({
@@ -357,6 +362,7 @@ def module_create(request, module):
 def module_edit(request, module, id):
     context = basepage_processor(request)
     record = None
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     ordered_module_fields = get_module_view_fields(module, 'edit')
     if user_can_edit_module(request.user, module) and user_is_linked_to_record(request.user, module, id):
         template = loader.get_template('portal/module_edit.html')
@@ -369,7 +375,7 @@ def module_edit(request, module, id):
                     module_def.before_save_on_edit_hook(bean, request)
                 except Exception:
                     pass
-                SuiteCRM().save_bean(bean, True)
+                suitecrm_instance.save_bean(bean, True)
                 context.update({
                     'record_edited': True
                 })
@@ -386,7 +392,7 @@ def module_edit(request, module, id):
                     'error_on_save': True
                 })
         try:
-            record = SuiteCRM().get_bean(module, id)
+            record = suitecrm_instance.get_bean(module, id)
         except Exception:
             context.update({
                 'error_retrieving_bean': True
@@ -403,6 +409,7 @@ def module_edit(request, module, id):
 
 @login_required
 def close_case(request):
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if user_can_read_module(request.user, 'Cases') and request.method == 'POST' \
             and 'case-id' in request.POST \
             and user_is_linked_to_case(request.user, request.POST['case-id']):
@@ -411,7 +418,7 @@ def close_case(request):
             bean['id'] = request.POST['case-id']
             bean['state'] = 'Closed'
             bean['status'] = 'Closed_Closed'
-            SuiteCRM().save_bean(bean, True)
+            suitecrm_instance.save_bean(bean, True)
         except Exception:
             pass
         url = reverse(
@@ -430,6 +437,7 @@ def close_case(request):
 
 @login_required
 def reopen_case(request):
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if user_can_read_module(request.user, 'Cases') and request.method == 'POST' \
             and 'case-id' in request.POST \
             and user_is_linked_to_case(request.user, request.POST['case-id']):
@@ -438,7 +446,7 @@ def reopen_case(request):
             bean['id'] = request.POST['case-id']
             bean['state'] = 'Open'
             bean['status'] = 'Open_New'
-            SuiteCRM().save_bean(bean, True)
+            suitecrm_instance.save_bean(bean, True)
         except Exception:
             pass
         url = reverse(
@@ -457,6 +465,7 @@ def reopen_case(request):
 
 @login_required
 def add_case_update(request):
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if user_can_read_module(request.user, 'Cases') and request.method == 'POST':
         if request.method == 'POST' and 'case-id' in request.POST \
                 and 'update-case-text' in request.POST \
@@ -477,7 +486,7 @@ def add_case_update(request):
             case_update['description'] = update_case_text
             case_update['internal'] = 0
             try:
-                SuiteCRM().save_bean(case_update)
+                suitecrm_instance.save_bean(case_update)
                 if case_update['id']:
                     for f in request.FILES.getlist('update-case-attachment'):
                         file_content = f.read()
@@ -489,7 +498,7 @@ def add_case_update(request):
                         note['parent_id'] = case_update['id']
                         note['contact_id'] = request.user.userattr.contact_id
                         note['filecontents'] = encoded.decode()
-                        SuiteCRM().save_bean(note)
+                        suitecrm_instance.save_bean(note)
                         if note['id']:
                            pass
                         else:
@@ -538,7 +547,8 @@ def add_case_update(request):
 
 @login_required
 def note_attachment(request, id):
-    attachment = SuiteCRM().get_note_attachment(id)['note_attachment']
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    attachment = suitecrm_instance.get_note_attachment(id)['note_attachment']
     if attachment['file']:
         response = HttpResponse(
             base64.b64decode(attachment['file']),
@@ -821,10 +831,11 @@ def create_role(request):
 
 
 def crm_entry_point(request):
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if request.GET['option'] and request.GET['task'] and request.GET['sug']:
         contact = None
         try:
-            contact = SuiteCRM().get_bean(
+            contact = suitecrm_instance.get_bean(
                 'Contacts',
                 request.GET['sug'],
                 ['id', 'first_name', 'last_name', 'email1', 'account_id']
@@ -864,16 +875,17 @@ def crm_entry_point(request):
 @login_required
 @permission_required('is_superuser')
 def cache(request):
+    suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
     context = basepage_processor(request)
     if request.method == 'POST' and 'action' in request.POST:
         if request.POST['action'] == 'clean_cache':
-            SuiteCRMCached().clear_cache()
+            suitecrmcached_instance.clear_cache()
             context.update({
                 'success_msg': True,
                 'msg': _('The cache has been cleared.')
             })
     context.update({
-        'cached_calls': SuiteCRMCached().get_number_of_cached_calls()
+        'cached_calls': suitecrmcached_instance.get_number_of_cached_calls()
     })
     template = loader.get_template('portal/cache.html')
     return HttpResponse(template.render(context, request))
@@ -923,11 +935,12 @@ def pdf_templates(request):
 def get_pdf(request, module, id):
     context = basepage_processor(request)
     template_id = get_pdf_template_id(module)
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     if user_can_read_module(request.user, module) \
             and user_can_read_record(request.user, module, id) \
             and template_id:
         try:
-            pdf = SuiteCRM().get_pdf_template(
+            pdf = suitecrm_instance.get_pdf_template(
                 template_id,
                 module,
                 id
