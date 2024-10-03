@@ -43,3 +43,23 @@ class AOS_Invoices(ModuleDefinition):
     @property
     def accounts_link_name(self):
         return 'aos_invoices'
+
+    @property
+    def dolibarr_name(self):
+        return 'invoices'
+
+    @property
+    def dolibarr_account_link_name(self):
+        return 'thirdparties'
+
+    @property
+    def dolibarr_account_filter(self):
+        return 'thirdparty_ids'
+
+    @property
+    def dolibarr_extrafield(self):
+        return True
+
+    @property
+    def dolibarr_extrafields_module(self):
+        return 'facture'
