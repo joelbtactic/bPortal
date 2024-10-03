@@ -952,10 +952,10 @@ def relate_bean_with_account(bean, account_id):
             suitecrm_instance.save_bean(bean)
         elif module_def.accounts_link_type == LinkType.RELATIONSHIP:
             result = suitecrm_instance.set_relationship(
-                'Accounts',
-                account_id,
                 module,
-                related_ids=[bean['id']]
+                bean['id'],
+                'Accounts',
+                related_ids=[account_id]
             )
             if result['created'] != 1:
                 return False
