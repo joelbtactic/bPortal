@@ -33,6 +33,7 @@ from .module_definitions import *
 from django.conf import settings
 from datetime import datetime, timedelta
 from .suitecrm_api_service import SuiteCRMManager
+import logging
 
 def remove_colon_of_field_labels(module_fields):
     for field in module_fields:
@@ -314,6 +315,7 @@ def retrieve_list_view_records(module, arguments, user):
             'error_retrieving_records': True
         }
     records = []
+    logger = logging.getLogger('bPortal')
     module_fields = {}
     ordered_module_fields = OrderedDict()
     filterable_fields = get_filter_layout(module)
@@ -434,7 +436,7 @@ def retrieve_list_view_records(module, arguments, user):
                 filter=filter_query
             )
     except Exception as e:
-        print(e)
+        logger.error(f"(Utils) Retrieve list view records ERROR: {e}")
 
     return {
         'module_key': module,
