@@ -32,6 +32,7 @@ from suitepy.bean import Bean
 from .module_definitions import *
 from django.conf import settings
 from datetime import datetime, timedelta
+from .suitecrm_api_service import SuiteCRMManager
 
 def remove_colon_of_field_labels(module_fields):
     for field in module_fields:
@@ -229,7 +230,8 @@ def set_sortable_atribute_on_module_fields(module_fields):
 
 
 def get_filterable_fields(module):
-    module_fields = SuiteCRMCached().get_module_fields(module)['module_fields']
+    suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+    module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
     filterable_fields = OrderedDict()
     for field_name, field_def in module_fields.items():
         if field_def['type'] not in NON_FILTERABLE_FIELD_TYPES\
@@ -239,7 +241,8 @@ def get_filterable_fields(module):
 
 
 def get_allowed_module_fields(module):
-    available_fields = SuiteCRMCached().get_module_fields(module)['module_fields']
+    suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+    available_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
     allowed_fields = OrderedDict()
     for field_name, field_def in available_fields.items():
         if field_def['type'] not in FIELD_TYPES_DISALLOWED_ON_VIEWS\
@@ -253,7 +256,8 @@ def get_filter_layout(module):
         ordered_module_fields = OrderedDict()
         view = Layout.objects.get(module=module, view='filter')
         fields_list = json.loads(view.fields)
-        module_fields = SuiteCRMCached().get_module_fields(module, fields_list)['module_fields']
+        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list)['module_fields']
         for field in fields_list:
             if field in module_fields:
                 ordered_module_fields[field] = module_fields[field]
@@ -308,7 +312,9 @@ def retrieve_list_view_records(module, arguments, user):
     try:
         view = Layout.objects.get(module=module, view='list')
         fields_list = json.loads(view.fields)
-        module_fields = SuiteCRMCached().get_module_fields(module, fields_list)['module_fields']
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list)['module_fields']
         for field in fields_list:
             if field in module_fields:
                 ordered_module_fields[field] = module_fields[field]
@@ -341,7 +347,7 @@ def retrieve_list_view_records(module, arguments, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 max_results=limit,
                 offset=offset,
@@ -353,7 +359,7 @@ def retrieve_list_view_records(module, arguments, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_where
-            records = SuiteCRM().get_relationships(
+            records = suitecrm_instance.get_relationships(
                 related_module,
                 related_id,
                 link_name,
@@ -376,7 +382,7 @@ def retrieve_list_view_records(module, arguments, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 max_results=limit,
                 offset=offset,
@@ -388,7 +394,7 @@ def retrieve_list_view_records(module, arguments, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 max_results=limit,
                 offset=offset,
@@ -413,6 +419,7 @@ def retrieve_list_view_records(module, arguments, user):
 def get_related_user_records(module, user):
     records = None
     try:
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         module_def = ModuleDefinitionFactory.get_module_definition(module)
         user_type = user.userattr.user_type
         if (user_type == 'account'
@@ -444,7 +451,7 @@ def get_related_user_records(module, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_dropdown_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 order_by=order_by,
                 fields=fields_list,
@@ -458,7 +465,7 @@ def get_related_user_records(module, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_dropdown_where
-            records = SuiteCRM().get_relationships(
+            records = suitecrm_instance.get_relationships(
                 related_module,
                 related_id,
                 link_name
@@ -477,7 +484,7 @@ def get_related_user_records(module, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_dropdown_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 order_by=order_by,
                 filter=filter_query,
@@ -491,7 +498,7 @@ def get_related_user_records(module, user):
                 if filter_query:
                     filter_query += " AND "
                 filter_query += module_def.custom_dropdown_where
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 order_by=order_by,
                 filter=filter_query,
@@ -613,7 +620,8 @@ def create_portal_user(contact):
     contact2['id'] = contact['id']
     contact2['joomla_account_id'] = user.id
     contact2['joomla_account_access'] = password
-    SuiteCRM().save_bean(contact2, True)
+    suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    suitecrm_instance.save_bean(contact2, True)
     return JsonResponse({"success": True})
 
 
@@ -665,6 +673,7 @@ def user_is_linked_to_record(user, module, id):
     try:
         module_def = ModuleDefinitionFactory.get_module_definition(module)
         user_type = user.userattr.user_type
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         if (user_type == 'account'
                 and module_def.accounts_link_type != LinkType.CONTACT) \
                 or module_def.contacts_link_type == LinkType.ACCOUNT:
@@ -684,13 +693,13 @@ def user_is_linked_to_record(user, module, id):
                 link_name,
                 related_id
             )
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 max_results=1,
                 filter=filter_query
             )
         elif link_type == LinkType.RELATIONSHIP:
-            records = SuiteCRM().get_relationships(
+            records = suitecrm_instance.get_relationships(
                 related_module,
                 related_id,
                 link_name,
@@ -706,7 +715,7 @@ def user_is_linked_to_record(user, module, id):
                 related_module,
                 related_id
             )
-            records = SuiteCRM().get_bean_list(
+            records = suitecrm_instance.get_bean_list(
                 module,
                 max_results=1,
                 filter=filter_query
@@ -732,7 +741,8 @@ def get_module_labels():
 def get_available_modules():
     available_modules = OrderedDict()
     try:
-        all_modules = SuiteCRMCached().get_available_modules()['modules']
+        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+        all_modules = suitecrmcached_instance.get_available_modules()['modules']
         for module in all_modules:
             if module['module_key'] not in FORBIDDEN_MODULES:
                 available_modules[module['module_key']] = module
@@ -761,7 +771,8 @@ def get_module_view_fields(module, view):
     try:
         view_def = Layout.objects.get(module=module, view=view)
         fields = json.loads(view_def.fields)
-        module_fields = SuiteCRMCached().get_module_fields(module)['module_fields']
+        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+        module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
         remove_colon_of_field_labels(module_fields)
         for row in fields:
             row_fields = []
@@ -777,7 +788,8 @@ def get_module_view_fields(module, view):
 
 
 def get_bean_from_post(module, view, data):
-    module_fields = SuiteCRMCached().get_module_fields(module)['module_fields']
+    suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+    module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
     view_def = Layout.objects.get(module=module, view=view)
     fields = json.loads(view_def.fields)
     bean = Bean(module)
@@ -841,15 +853,16 @@ def relate_bean_with_user(bean, user):
 
 def relate_bean_with_contact(bean, contact_id):
     try:
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         module = bean.module
         if not contact_id or not module:
             return False
         module_def = ModuleDefinitionFactory.get_module_definition(module)
         if module_def.contacts_link_type == LinkType.RELATED:
             bean[module_def.contacts_link_name] = contact_id
-            SuiteCRM().save_bean(bean)
+            suitecrm_instance.save_bean(bean)
         elif module_def.contacts_link_type == LinkType.RELATIONSHIP:
-            result = SuiteCRM().set_relationship(
+            result = suitecrm_instance.set_relationship(
                 'Contacts',
                 contact_id,
                 module,
@@ -860,7 +873,7 @@ def relate_bean_with_contact(bean, contact_id):
         elif module_def.contacts_link_type == LinkType.PARENT:
             bean['parent_type'] = 'Contacts'
             bean['parent_id'] = contact_id
-            SuiteCRM().save_bean(bean)
+            suitecrm_instance.save_bean(bean)
     except Exception:
         return False
     return True
@@ -868,15 +881,16 @@ def relate_bean_with_contact(bean, contact_id):
 
 def relate_bean_with_account(bean, account_id):
     try:
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         module = bean.module
         if not account_id or not module:
             return False
         module_def = ModuleDefinitionFactory.get_module_definition(module)
         if module_def.accounts_link_type == LinkType.RELATED:
             bean[module_def.accounts_link_name] = account_id
-            SuiteCRM().save_bean(bean)
+            suitecrm_instance.save_bean(bean)
         elif module_def.accounts_link_type == LinkType.RELATIONSHIP:
-            result = SuiteCRM().set_relationship(
+            result = suitecrm_instance.set_relationship(
                 'Accounts',
                 account_id,
                 module,
@@ -887,7 +901,7 @@ def relate_bean_with_account(bean, account_id):
         elif module_def.accounts_link_type == LinkType.PARENT:
             bean['parent_type'] = 'Accounts'
             bean['parent_id'] = account_id
-            SuiteCRM().save_bean(bean)
+            suitecrm_instance.save_bean(bean)
     except Exception:
         return False
     return True
