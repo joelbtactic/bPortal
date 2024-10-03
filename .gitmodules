@@ -1,3 +1,6 @@
 [submodule "suitepy"]
 	path = suitepy
 	url = https://github.com/btactic/SuitePY.git
+[submodule "dolibarrpy"]
+	path = dolibarrpy
+	url = https://github.com/joelbtactic/DolibarrPY.git
