@@ -45,3 +45,21 @@ class DolibarrUtils:
         for field_name, field_def in module_fields.items():
             filterable_fields[field_name] = field_def
         return filterable_fields
+
+    def get_dol_account_id(self, dolibarr_module, related_module, related_id):
+        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+        account_bean = suitecrmcached_instance.get_bean(
+            related_module,
+            related_id,
+        )
+
+        num_cliente_erp = account_bean['numerp_c']
+
+        filter_dolibarr = {
+            'sqlfilters': '(ef.nmeroclienteerp:=:'+ "'" + num_cliente_erp + "'" + ')'
+        }
+
+        dolibarr_account = self.dolibarr_cached.get_all_records(dolibarr_module, filter_dolibarr)
+        account_id = dolibarr_account['entry_list'][0]['id']
+
+        return account_id
