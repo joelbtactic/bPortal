@@ -64,6 +64,56 @@ class DolibarrUtils:
 
         return account_id
 
+    def retrieve_list_view_records(self, module, arguments, user):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+        except ModuleDefinitionNotFoundException:
+            return {
+                'module_key': module,
+                'unsupported_module': True
+            }
+        try:
+            user_type = user.userattr.user_type
+            if (user_type == 'account'
+                    and module_def.accounts_link_type != LinkType.CONTACT) \
+                    or module_def.contacts_link_type == LinkType.ACCOUNT:
+                related_module = 'Accounts'
+                related_id = user.userattr.account_id
+            else:
+                related_module = None
+        except Exception:
+            return {
+                'module_key': module,
+                'error_retrieving_records': True
+            }
+        ordered_module_fields = OrderedDict()
+        filterable_fields = OrderedDict()
+        if (related_module == 'Accounts'):
+            records = []
+            order_by = arguments.get('order_by')
+            order = arguments.get('order')
+            try:
+                ordered_module_fields = self.get_ordered_fields(module, module_def)
+                filterable_fields = self.get_filter_layout(module, module_def)
+                records = self._retrieve_records(module_def, related_module, related_id, arguments, filterable_fields, ordered_module_fields)
+
+            except Exception as e:
+                print(e)
+        else:
+            return {
+                'module_key': module,
+                'invoice_permissons': True
+            }
+
+        return {
+            'module_key': module,
+            'records': records,
+            'module_fields': ordered_module_fields,
+            'filterable_fields': filterable_fields,
+            'current_filters': self.get_listview_filter(arguments),
+            'order_by': order_by,
+            'order': order
+        }
 
     def get_filter_layout(self, module, module_def):
         try:
