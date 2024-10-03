@@ -44,6 +44,7 @@ import base64
 from django.http import Http404
 from django.urls import reverse
 from .suitecrm_api_service import SuiteCRMManager
+import logging
 
 # Create your views here.
 
@@ -317,6 +318,7 @@ def create_case_add_attachments(request, bean_case):
 def module_create(request, module):
     context = basepage_processor(request)
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    logger = logging.getLogger('bPortal')
     ordered_module_fields = get_module_view_fields(module, 'create')
     if user_can_create_module(request.user, module):
         template = loader.get_template('portal/module_create.html')
@@ -345,7 +347,7 @@ def module_create(request, module):
                 )
                 return HttpResponseRedirect(url)
             except Exception as e:
-                print(e)
+                logger.error(f"(View.py) Error in module_create method: {e}")
                 context.update({
                     'error_on_create': True
                 })
