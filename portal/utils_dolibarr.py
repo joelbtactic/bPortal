@@ -280,3 +280,23 @@ class DolibarrUtils:
             action
         )
 
+    def user_is_linked_to_record(self, user, module, id):
+        try:
+            module_def = ModuleDefinitionFactory.get_module_definition(module)
+            user_type = user.userattr.user_type
+            if (user_type == 'account'
+                    and module_def.accounts_link_type != LinkType.CONTACT) \
+                    or module_def.contacts_link_type == LinkType.ACCOUNT:
+                related_module = 'Accounts'
+                related_id = user.userattr.account_id
+            else:
+                return False
+
+            account_id = self.get_dol_account_id(module_def.dolibarr_account_link_name, related_module, related_id)
+            record = self.dolibarr_service.get_record_by_id(module_def.dolibarr_name, id)
+            if record['socid'] == account_id:
+                return True
+        except Exception:
+            pass
+        return False
+
