@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################
 
+from portal.utils_dolibarr import DolibarrUtils
 from .models import RolePermission
 from .models import Layout
 from suitepy.suitecrm import SuiteCRM
@@ -720,6 +721,9 @@ def enable_portal_user(contact):
 
 def user_can_read_record(user, module, id):
     try:
+        dolibarr_utils = DolibarrUtils()
+        if module == 'AOS_Invoices' and dolibarr_utils.user_is_linked_to_record(user, module, id):
+            return True
         if user_is_linked_to_record(user, module, id):
             return True
         module_def = ModuleDefinitionFactory.get_module_definition(module)
