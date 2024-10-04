@@ -222,10 +222,15 @@ def user_records(request, module):
 
 @login_required
 def module_detail(request, module, id):
+    dolibarr_utils = DolibarrUtils()
     context = basepage_processor(request)
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     record = None
-    ordered_module_fields = get_module_view_fields(module, 'detail')
+    if module == 'AOS_Invoices':
+        ordered_module_fields = dolibarr_utils.get_view_layout(module, 'detail')
+    else:
+        ordered_module_fields = get_module_view_fields(module, 'detail')
+
     if user_can_read_module(request.user, module) and user_can_read_record(request.user, module, id):
         template = loader.get_template('portal/module_detail.html')
         try:
@@ -238,7 +243,9 @@ def module_detail(request, module, id):
                 context.update({
                     'case_updates': get_case_updates(id, arguments)
                 })
-            elif module == 'AOS_Invoices' or module == 'AOS_Quotes' or module == 'AOS_Contracts':
+            elif module == 'AOS_Invoices':
+                record = dolibarr_utils.get_dolibarr_record(module, id, 'lines')
+            elif module == 'AOS_Quotes' or module == 'AOS_Contracts':
                 record = get_aos_quotes_record(module, id)
                 context.update({
                     'pdf_template_enabled': True if get_pdf_template_id(module) else None
