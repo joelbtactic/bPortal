@@ -342,22 +342,29 @@ def create_case_add_attachments(request, bean_case):
 @login_required
 def module_create(request, module):
     context = basepage_processor(request)
+    dolibarr_utils = DolibarrUtils()
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
     logger = logging.getLogger('bPortal')
-    ordered_module_fields = get_module_view_fields(module, 'create')
+    if module == 'AOS_Invoices':
+        ordered_module_fields = dolibarr_utils.get_view_layout(module, 'create')
+    else:
+        ordered_module_fields = get_module_view_fields(module, 'create')
     if user_can_create_module(request.user, module):
         template = loader.get_template('portal/module_create.html')
         if request.method == 'POST':
             try:
-                bean = get_bean_from_post(module, 'create', request.POST)
-                try:
-                    module_def = ModuleDefinitionFactory.get_module_definition(module)
-                    module_def.before_save_on_create_hook(bean, request)
-                except Exception:
-                    pass
-                suitecrm_instance.save_bean(bean)
-                relate_result = relate_bean_with_user(bean, request.user)
-                context.update(relate_result)
+                if module == 'AOS_Invoices':
+                    bean = dolibarr_utils.get_bean_from_post(module, request.user, request.POST)
+                else:
+                    bean = get_bean_from_post(module, 'create', request.POST)
+                    try:
+                        module_def = ModuleDefinitionFactory.get_module_definition(module)
+                        module_def.before_save_on_create_hook(bean, request)
+                    except Exception:
+                        pass
+                    suitecrm_instance.save_bean(bean)
+                    relate_result = relate_bean_with_user(bean, request.user)
+                    context.update(relate_result)
                 context.update({
                     'record_created_successfully': True
                 })
