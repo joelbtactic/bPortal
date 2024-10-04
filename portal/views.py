@@ -28,6 +28,8 @@ from django.template import loader
 from suitepy.suitecrm import SuiteCRM
 from suitepy.suitecrm_cached import SuiteCRMCached
 from suitepy.bean import Bean
+from dolibarrpy.dolibarrpy_cached import DolibarrCached
+from .utils_dolibarr import DolibarrUtils
 from .models import Layout
 from .models import Role, RolePermission, RoleUser
 from collections import OrderedDict
