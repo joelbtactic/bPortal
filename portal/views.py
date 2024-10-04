@@ -929,16 +929,18 @@ def crm_entry_point(request):
 @permission_required('is_superuser')
 def cache(request):
     suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
+    dolibarr_cached = DolibarrCached()
     context = basepage_processor(request)
     if request.method == 'POST' and 'action' in request.POST:
         if request.POST['action'] == 'clean_cache':
             suitecrmcached_instance.clear_cache()
+            dolibarr_cached.clear_cache()
             context.update({
                 'success_msg': True,
                 'msg': _('The cache has been cleared.')
             })
     context.update({
-        'cached_calls': suitecrmcached_instance.get_number_of_cached_calls()
+        'cached_calls': suitecrmcached_instance.get_number_of_cached_calls() + dolibarr_cached.get_number_of_cached_calls()
     })
     template = loader.get_template('portal/cache.html')
     return HttpResponse(template.render(context, request))
