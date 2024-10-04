@@ -394,22 +394,30 @@ def module_create(request, module):
 
 @login_required
 def module_edit(request, module, id):
+    dolibarr_utils = DolibarrUtils()
     context = basepage_processor(request)
     record = None
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
-    ordered_module_fields = get_module_view_fields(module, 'edit')
-    if user_can_edit_module(request.user, module) and user_is_linked_to_record(request.user, module, id):
+    if module == 'AOS_Invoices':
+        ordered_module_fields = dolibarr_utils.get_view_layout(module, 'edit')
+    else:
+        ordered_module_fields = get_module_view_fields(module, 'edit')
+
+    if user_can_edit_module(request.user, module) and user_can_read_record(request.user, module, id):
         template = loader.get_template('portal/module_edit.html')
         if request.method == 'POST':
             try:
-                bean = get_bean_from_post(module, 'edit', request.POST)
-                bean['id'] = id
-                try:
-                    module_def = ModuleDefinitionFactory.get_module_definition(module)
-                    module_def.before_save_on_edit_hook(bean, request)
-                except Exception:
-                    pass
-                suitecrm_instance.save_bean(bean, True)
+                if module == 'AOS_Invoices':
+                    bean = dolibarr_utils.get_bean_from_put(module, 'edit', request.POST, id)
+                else:
+                    bean = get_bean_from_post(module, 'edit', request.POST)
+                    bean['id'] = id
+                    try:
+                        module_def = ModuleDefinitionFactory.get_module_definition(module)
+                        module_def.before_save_on_edit_hook(bean, request)
+                    except Exception:
+                        pass
+                    suitecrm_instance.save_bean(bean, True)
                 context.update({
                     'record_edited': True
                 })
@@ -426,7 +434,10 @@ def module_edit(request, module, id):
                     'error_on_save': True
                 })
         try:
-            record = suitecrm_instance.get_bean(module, id)
+            if module == 'AOS_Invoices':
+                record = dolibarr_utils.get_dolibarr_record(module, id)
+            else:
+                record = suitecrm_instance.get_bean(module, id)
         except Exception:
             context.update({
                 'error_retrieving_bean': True
