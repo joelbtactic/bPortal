@@ -1020,5 +1020,34 @@ def get_pdf(request, module, id):
         template = loader.get_template('portal/insufficient_permissions.html')
         return HttpResponse(template.render(context, request))
 
+@login_required
+def get_pdf_dolibarr(request, module, id):
+    context = basepage_processor(request)
+    if user_can_read_module(request.user, module) \
+            and user_can_read_record(request.user, module, id):
+        try:
+            dolibarr_util = DolibarrUtils()
+            pdf = dolibarr_util.get_pdf(module, id)
+
+            if 'error' in pdf:
+                raise Http404(_("The requested file was not found."))
+            else:
+                response = HttpResponse(
+                    base64.b64decode(pdf['content']),
+                    content_type='application/octet-stream'
+                )
+                response['Content-Disposition'] = "attachment; filename=%s" \
+                    % pdf['filename']
+                return response
+        except Exception:
+            context.update({
+                'msg': _('Error while retrieving document.')
+            })
+            template = loader.get_template('portal/error.html')
+            return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('portal/insufficient_permissions.html')
+        return HttpResponse(template.render(context, request))
+
 def offline(request):
     return render(request, 'portal/offline.html')
