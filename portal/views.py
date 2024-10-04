@@ -915,7 +915,6 @@ def crm_entry_point(request):
             return disable_portal_user(contact)
         elif request.GET['task'] == 'enable_user':
             return enable_portal_user(contact)
-        print(request.GET['task'])
     return JsonResponse(
         {
             "status": "Error",
