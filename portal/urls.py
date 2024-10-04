@@ -62,6 +62,8 @@ urlpatterns = [
     re_path(r'^pdf_templates/$', views.pdf_templates, name='pdf_templates'),
     re_path(r'^get_pdf/(?P<module>\w+)/(?P<id>[\w-]+)/$',
         views.get_pdf, name='get_pdf'),
+    re_path(r'^get_pdf_dolibarr/(?P<module>\w+)/(?P<id>[\w-]+)/$',
+        views.get_pdf_dolibarr, name='get_pdf_dolibarr'),
     re_path(r'^index.php$', views.crm_entry_point, name='crm_entry_point'),
     re_path('^offline/$', views.offline, name='offline'),
 ]
