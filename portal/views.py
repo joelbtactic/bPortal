@@ -714,7 +714,11 @@ def edit_layout(request, module, layout):
             "msg": _("Layout updated successfully")
         })
     elif request.method == 'GET':
-        available_fields = get_allowed_module_fields(module)
+        if module == 'AOS_Invoices':
+            dolibarr_instance = DolibarrUtils()
+            available_fields = dolibarr_instance.get_module_fields_dolibarr(module)
+        else:
+            available_fields = get_allowed_module_fields(module)
         module_fields = list()
         template = loader.get_template('portal/edit_layout.html')
         try:
