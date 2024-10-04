@@ -643,7 +643,11 @@ def list_layout(request, module, layout):
             "msg": _("Layout updated successfully")
         })
     elif request.method == 'GET':
-        if layout == 'filter':
+        if module == 'AOS_Invoices':
+            dolibarr_instance = DolibarrUtils()
+            available_fields = dolibarr_instance.get_module_fields_dolibarr(module)
+
+        elif layout == 'filter':
             available_fields = get_filterable_fields(module)
         else:
             available_fields = get_allowed_module_fields(module)
