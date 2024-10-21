@@ -175,11 +175,18 @@
                         }).done(function(response) {
                             response.records.forEach(option => {
                                 $("#{{def.id_name}}").append("<option value='" + option.id + "'>" + option.name + "</option>");
+                                $("#{{def.id_name}}").change(function() {
+                                    $("input[name='{{def.name}}']").val(option.name);
+                                    $("select[data-control='link_field']").val("");
+                                    $("input[data-control='link_field']").val("");
+                                });
                             });
                             var selectedOptionId = "{{ current_filters|get:def.id_name }}";
                             if (selectedOptionId) {
                                 $("#{{def.id_name}}").val(selectedOptionId).change();
                             }
+                        }).fail(function(response) {
+                            console.log('Error retrieving "{{def.id_name}}" options.');
                         });
                     </script>
                 {% else %}
