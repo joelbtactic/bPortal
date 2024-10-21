@@ -165,7 +165,7 @@
             <ul class="pagination justify-content-end">
                 {% if records.previous_offset != None %}
                     <li class="page-item">
-                        <form action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
+                        <form class="filtered" id="{{ module_key }}_filter" action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
                             {% csrf_token %}
                             <input type="hidden" name="limit" value="{{ records.current_limit }}">
                             <input type="hidden" name="offset" value="{{ records.previous_offset }}">
@@ -187,7 +187,7 @@
                 {% endif %}
                 {% if records.next_offset != None %}
                     <li class="page-item">
-                        <form action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
+                        <form class="filtered" id="{{ module_key }}_filter" action="{% url 'module_list' module_key %}" method="post" class="d-inline-block">
                             {% csrf_token %}
                             <input type="hidden" name="limit" value="{{ records.current_limit }}">
                             <input type="hidden" name="offset" value="{{ records.next_offset }}">
