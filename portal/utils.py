@@ -514,7 +514,8 @@ def get_related_user_records(module, user):
             records = suitecrm_instance.get_relationships(
                 related_module,
                 related_id,
-                link_name
+                link_name,
+                filter=filter_query
             )
         elif link_type == LinkType.PARENT:
             filter_query = get_filter_parent(
