@@ -34,6 +34,7 @@ from .module_definitions import *
 from django.conf import settings
 from datetime import datetime, timedelta
 from .suitecrm_api_service import SuiteCRMManager
+from django.utils import translation
 import logging
 
 def remove_colon_of_field_labels(module_fields):
@@ -241,6 +242,12 @@ FORBIDDEN_MODULES = [
     'Calendar'
 ]
 
+DEFAULT_LOCALE_MAP = {
+    'en': 'en_us',
+    'es': 'es_ES',
+    'ca': 'es_CA'
+}
+
 
 def set_sortable_atribute_on_module_fields(module_fields):
     for field_name, field_def in module_fields.items():
@@ -253,7 +260,8 @@ def set_sortable_atribute_on_module_fields(module_fields):
 
 def get_filterable_fields(module):
     suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-    module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
+    current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+    module_fields = suitecrmcached_instance.get_module_fields(module, lang=current_language)['module_fields']
     filterable_fields = OrderedDict()
     for field_name, field_def in module_fields.items():
         if field_def['type'] not in NON_FILTERABLE_FIELD_TYPES\
@@ -264,7 +272,8 @@ def get_filterable_fields(module):
 
 def get_allowed_module_fields(module):
     suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-    available_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
+    current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+    available_fields = suitecrmcached_instance.get_module_fields(module, lang=current_language)['module_fields']
     allowed_fields = OrderedDict()
     for field_name, field_def in available_fields.items():
         if field_def['type'] not in FIELD_TYPES_DISALLOWED_ON_VIEWS\
@@ -279,7 +288,8 @@ def get_filter_layout(module):
         view = Layout.objects.get(module=module, view='filter')
         fields_list = json.loads(view.fields)
         suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list)['module_fields']
+        current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list, current_language)['module_fields']
         for field in fields_list:
             if field in module_fields:
                 ordered_module_fields[field] = module_fields[field]
@@ -337,7 +347,8 @@ def retrieve_list_view_records(module, arguments, user):
         fields_list = json.loads(view.fields)
         suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
         suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list)['module_fields']
+        current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+        module_fields = suitecrmcached_instance.get_module_fields(module, fields_list, current_language)['module_fields']
         for field in fields_list:
             if field in module_fields:
                 ordered_module_fields[field] = module_fields[field]
@@ -837,7 +848,8 @@ def get_module_view_fields(module, view):
         view_def = Layout.objects.get(module=module, view=view)
         fields = json.loads(view_def.fields)
         suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-        module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
+        current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+        module_fields = suitecrmcached_instance.get_module_fields(module, lang=current_language)['module_fields']
         remove_colon_of_field_labels(module_fields)
         for row in fields:
             row_fields = []
@@ -854,7 +866,8 @@ def get_module_view_fields(module, view):
 
 def get_bean_from_post(module, view, data):
     suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-    module_fields = suitecrmcached_instance.get_module_fields(module)['module_fields']
+    current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
+    module_fields = suitecrmcached_instance.get_module_fields(module, lang=current_language)['module_fields']
     view_def = Layout.objects.get(module=module, view=view)
     fields = json.loads(view_def.fields)
     bean = Bean(module)
