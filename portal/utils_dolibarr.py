@@ -8,14 +8,19 @@ from collections import OrderedDict
 import json
 from .module_definitions import *
 from .utils_datetime import *
+from django.utils import translation
 
 class DolibarrUtils:
 
     _logger = logging.getLogger('bPortal')
+    _available_langs = ['en', 'es', 'ca']
 
     def __init__(self) -> None:
         self.dolibarr_service = DolibarrApiService()
         self.dolibarr_cached = DolibarrApiServiceCached()
+        self.current_language = translation.get_language()
+        if self.current_language not in self._available_langs:
+            self.current_language = 'en'
 
     def get_listview_filter(self, parameters):
         filters = parameters.copy()
@@ -40,9 +45,9 @@ class DolibarrUtils:
             }
 
         if module_def.dolibarr_extrafield:
-            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
         else:
-            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, current_language=self.current_language)
 
         filterable_fields = OrderedDict()
         for field_name, field_def in module_fields.items():
@@ -125,9 +130,9 @@ class DolibarrUtils:
             view = Layout.objects.get(module=module, view='filter')
             fields_list = json.loads(view.fields)
             if module_def.dolibarr_extrafield:
-                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
             else:
-                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, current_language=self.current_language)
             for field in fields_list:
                 if field in module_fields:
                     ordered_module_fields[field] = module_fields[field]
@@ -149,9 +154,9 @@ class DolibarrUtils:
             view = Layout.objects.get(module=module, view=view_type)
             fields_list = json.loads(view.fields)
             if module_def.dolibarr_extrafield:
-                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
             else:
-                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+                module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, current_language=self.current_language)
             for row in fields_list:
                 row_fields = []
                 for field in row:
@@ -173,9 +178,9 @@ class DolibarrUtils:
         fields_list = json.loads(view.fields)
 
         if module_def.dolibarr_extrafield:
-            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
         else:
-            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name)
+            module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, current_language=self.current_language)
 
         for field in fields_list:
             if field in module_fields:
@@ -327,7 +332,7 @@ class DolibarrUtils:
                 'unsupported_module': True
             }
 
-        module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module)
+        module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
         view_def = Layout.objects.get(module=module, view=view)
         fields = json.loads(view_def.fields)
 
