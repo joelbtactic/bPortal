@@ -323,7 +323,7 @@ class DolibarrUtils:
         doc_path = bean['last_main_doc']
         return self.dolibarr_service.get_document_pdf(module_def.dolibarr_extrafields_module, doc_path)
 
-    def get_bean_from_put(self, module, view, data, id):
+    def get_bean_from_put(self, module, data, id):
         try:
             module_def = ModuleDefinitionFactory.get_module_definition(module)
         except ModuleDefinitionNotFoundException:
@@ -333,8 +333,6 @@ class DolibarrUtils:
             }
 
         module_fields = self.dolibarr_cached.get_module_fields(module_def.dolibarr_name, module_def.dolibarr_extrafield, module_def.dolibarr_extrafields_module, self.current_language)
-        view_def = Layout.objects.get(module=module, view=view)
-        fields = json.loads(view_def.fields)
 
         params_update = {
             "array_options": {}

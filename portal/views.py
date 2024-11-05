@@ -409,7 +409,7 @@ def module_edit(request, module, id):
         if request.method == 'POST':
             try:
                 if module == 'AOS_Invoices':
-                    bean = dolibarr_utils.get_bean_from_put(module, 'edit', request.POST, id)
+                    bean = dolibarr_utils.get_bean_from_put(module, request.POST, id)
                 else:
                     bean = get_bean_from_post(module, 'edit', request.POST)
                     bean['id'] = id
