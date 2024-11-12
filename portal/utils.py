@@ -818,8 +818,9 @@ def get_module_labels():
 def get_available_modules():
     available_modules = OrderedDict()
     try:
+        current_language = DEFAULT_LOCALE_MAP.get(translation.get_language(), 'en_us')
         suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-        all_modules = suitecrmcached_instance.get_available_modules()['modules']
+        all_modules = suitecrmcached_instance.get_available_modules(current_language)['modules']
         for module in all_modules:
             if module['module_key'] not in FORBIDDEN_MODULES:
                 available_modules[module['module_key']] = module
