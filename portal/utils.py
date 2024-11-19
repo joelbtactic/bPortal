@@ -245,7 +245,7 @@ FORBIDDEN_MODULES = [
 DEFAULT_LOCALE_MAP = {
     'en': 'en_us',
     'es': 'es_ES',
-    'ca': 'es_CA'
+    'ca': 'ca_ES'
 }
 
 
