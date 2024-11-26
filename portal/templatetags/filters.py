@@ -65,6 +65,8 @@ def get_label(dict, key):
 
 @register.filter(name='decode')
 def decode(value):
+    if value is None:
+        return html.unescape("")
     return html.unescape(value)
 
 
