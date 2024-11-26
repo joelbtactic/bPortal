@@ -55,8 +55,8 @@ class DolibarrUtils:
         return filterable_fields
 
     def get_dol_account_id(self, dolibarr_module, related_module, related_id):
-        suitecrmcached_instance = SuiteCRMManager.get_suitecrmcached_instance()
-        account_bean = suitecrmcached_instance.get_bean(
+        suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+        account_bean = suitecrm_instance.get_bean(
             related_module,
             related_id,
         )
