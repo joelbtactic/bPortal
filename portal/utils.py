@@ -943,10 +943,11 @@ def relate_bean_with_contact(bean, contact_id):
             suitecrm_instance.save_bean(bean)
         elif module_def.contacts_link_type == LinkType.RELATIONSHIP:
             result = suitecrm_instance.set_relationship(
-                module,
-                bean['id'],
                 'Contacts',
-                related_ids=[contact_id]
+                contact_id,
+                module,
+                [bean['id']],
+                link_field_name=module_def.contacts_link_name
             )
             if result['created'] != 1:
                 return False
@@ -971,10 +972,11 @@ def relate_bean_with_account(bean, account_id):
             suitecrm_instance.save_bean(bean)
         elif module_def.accounts_link_type == LinkType.RELATIONSHIP:
             result = suitecrm_instance.set_relationship(
-                module,
-                bean['id'],
                 'Accounts',
-                related_ids=[account_id]
+                account_id,
+                module,
+                [bean['id']],
+                link_field_name=module_def.accounts_link_name
             )
             if result['created'] != 1:
                 return False
