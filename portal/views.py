@@ -729,7 +729,6 @@ def edit_layout(request, module, layout):
                 for field in row:
                     if field in available_fields:
                         module_fields_row.append(available_fields[field])
-                        del available_fields[field]
                     elif not field:
                         module_fields_row.append(None)
                 module_fields.append(module_fields_row)
@@ -740,6 +739,7 @@ def edit_layout(request, module, layout):
             'module_key': module,
             'module_fields': module_fields,
             'available_fields': available_fields,
+            'json_available_fields': json.dumps(available_fields),
             'layout': layout
         })
         return HttpResponse(template.render(context, request))
