@@ -30,6 +30,7 @@ from suitepy.suitecrm import SuiteCRM
 from suitepy.suitecrm_cached import SuiteCRMCached
 from suitepy.bean import Bean
 from dolibarrpy.dolibarrpy_cached import DolibarrCached
+from dolibarrpy.dolibarrpy_service import DolibarrApiService
 from .utils_dolibarr import DolibarrUtils
 from .models import Layout
 from .models import Role, RolePermission, RoleUser
@@ -270,27 +271,45 @@ def module_detail(request, module, id):
 @login_required
 def module_remove_record(request, module):
     suitecrm_instance = SuiteCRMManager.get_suitecrm_instance()
+    dolibarr_instance = DolibarrApiService()
     if request.method == 'POST' and 'id' in request.POST:
         id = request.POST['id']
         if user_can_delete_module(request.user, module) \
-                and user_is_linked_to_record(request.user, module, id):
-            bean = Bean(module)
-            bean['id'] = id
-            bean['deleted'] = 1
-            try:
-                suitecrm_instance.save_bean(bean)
-                return JsonResponse({
-                    "status": "Success",
-                    "msg": _("Record deleted successfully.")
-                })
-            except Exception:
-                return JsonResponse(
-                    {
-                        "status": "Error",
-                        "error": _("Error deleting record.")
-                    },
-                    status=400
-                )
+                and user_can_read_record(request.user, module, id):
+            if module == 'AOS_Invoices':
+                module_def = ModuleDefinitionFactory.get_module_definition(module)
+                try:
+                    dolibarr_instance.delete_record(module_def.dolibarr_name, id)
+                    return JsonResponse({
+                        "status": "Success",
+                        "msg": _("Record deleted successfully.")
+                    })
+                except Exception:
+                    return JsonResponse(
+                        {
+                            "status": "Error",
+                            "error": _("Error deleting record.")
+                        },
+                        status=400
+                    )
+            else:
+                bean = Bean(module)
+                bean['id'] = id
+                bean['deleted'] = 1
+                try:
+                    suitecrm_instance.save_bean(bean)
+                    return JsonResponse({
+                        "status": "Success",
+                        "msg": _("Record deleted successfully.")
+                    })
+                except Exception:
+                    return JsonResponse(
+                        {
+                            "status": "Error",
+                            "error": _("Error deleting record.")
+                        },
+                        status=400
+                    )
         else:
             return JsonResponse(
                 {
