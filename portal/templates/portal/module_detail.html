@@ -23,6 +23,7 @@
 {% endblock %}
 {% block content %}
 {% load filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'portal/module_detail_table.css' %}" />
 
     <div class="row">
         <div class="col">
@@ -163,5 +164,21 @@
             {% blocktrans with module=module_labels|get_label:module_key %}Module {{module}} has not defined the detail view.{% endblocktrans %}
         </div>
     {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tables = document.querySelectorAll("table");
+
+            tables.forEach(function(table) {
+                if (!table.parentElement.classList.contains("table-responsive")) {
+                    var wrapper = document.createElement("div");
+                    wrapper.classList.add("table-responsive");
+
+                    table.parentNode.insertBefore(wrapper, table);
+
+                    wrapper.appendChild(table);
+                }
+            });
+        });
+    </script>
 
 {% endblock %}

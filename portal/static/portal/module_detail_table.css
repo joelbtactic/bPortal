@@ -1,0 +1,23 @@
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    max-width: 200%;
+    border-collapse: collapse;
+}
+
+table th {
+    font-weight: bold;
+}
+
+table th, table td {
+    padding: 2px;
+    border-color: lightgray;
+    border-width: 1px;
+}
