@@ -33,6 +33,7 @@ from suitepy.bean import Bean
 from .module_definitions import *
 from django.conf import settings
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from .suitecrm_api_service import SuiteCRMManager
 from django.utils import translation
 import logging
@@ -561,7 +562,7 @@ def get_calendar_days_in_sql_format(option, days, field_name):
 
     if option == 'this_month':
         first_month = filter_date.replace(day=1).strftime("%Y-%m-%d")
-        second_month = filter_date.replace(day=1, month=filter_date.month+1).strftime("%Y-%m-%d")
+        second_month = (relativedelta(months=1) + filter_date.replace(day=1)).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     elif option == 'last':
@@ -569,28 +570,28 @@ def get_calendar_days_in_sql_format(option, days, field_name):
         query = field_name  + ' >= \'' + last_days.strftime("%Y-%m-%d") + '\'' + ' AND ' + field_name  + ' < \'' + today + '\''
 
     elif option == 'last_month':
-        first_month = filter_date.replace(day=1, month=filter_date.month-1).strftime("%Y-%m-%d")
+        first_month = (relativedelta(months=-1) + filter_date.replace(day=1)).strftime("%Y-%m-%d")
         second_month = filter_date.replace(day=1).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     elif option == 'next_month':
-        first_month = filter_date.replace(day=1, month=filter_date.month+1).strftime("%Y-%m-%d")
-        second_month = filter_date.replace(day=1, month=filter_date.month+2).strftime("%Y-%m-%d")
+        first_month = (relativedelta(months=1) + filter_date.replace(day=1)).strftime("%Y-%m-%d")
+        second_month = (relativedelta(months=2) + filter_date.replace(day=1)).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     elif option == 'last_year':
-        first_month = filter_date.replace(day=1, month=1, year=filter_date.year-1).strftime("%Y-%m-%d")
+        first_month = (relativedelta(years=-1) + filter_date.replace(day=1, month=1)).strftime("%Y-%m-%d")
         second_month = filter_date.replace(day=1, month=1).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     elif option == 'next_year':
-        first_month = filter_date.replace(day=1, month=1, year=filter_date.year+1).strftime("%Y-%m-%d")
-        second_month = filter_date.replace(day=1, month=1, year=filter_date.year+2).strftime("%Y-%m-%d")
+        first_month = (relativedelta(years=1) + filter_date.replace(day=1, month=1)).strftime("%Y-%m-%d")
+        second_month = (relativedelta(years=2) + filter_date.replace(day=1, month=1)).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     elif option == 'this_year':
         first_month = filter_date.replace(day=1, month=1, year=filter_date.year).strftime("%Y-%m-%d")
-        second_month = filter_date.replace(day=1, month=1, year=filter_date.year+1).strftime("%Y-%m-%d")
+        second_month = (relativedelta(years=1) + filter_date.replace(day=1, month=1)).strftime("%Y-%m-%d")
         query = field_name  + ' >= \'' + first_month + '\'' + ' AND ' + field_name  + ' < \'' + second_month + '\''
 
     else:
