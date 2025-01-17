@@ -291,7 +291,7 @@ PWA_APP_SCREENSHOTS = [
     }
 ]
 
-PWA_APP_DEBUG_MODE = True
+PWA_APP_DEBUG_MODE = False
 
 try:
     from .custom_settings import *
