@@ -204,6 +204,26 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
+        'src': '/static/portal/img/icons/icon-72x72.png',
+        'sizes': '72x72',
+        'size': '72x72'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-96x96.png',
+        'sizes': '96x96',
+        'size': '96x96'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-128x128.png',
+        'sizes': '128x128',
+        'size': '128x128'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-144x144.png',
+        'sizes': '144x144',
+        'size': '144x144'
+    },
+    {
         'src': '/static/portal/img/icons/icon-152x152.png',
         'sizes': '152x152',
         'size': '152x152'
@@ -217,6 +237,26 @@ PWA_APP_ICONS = [
 ]
 
 PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/portal/img/icons/icon-72x72.png',
+        'sizes': '72x72',
+        'size': '72x72'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-96x96.png',
+        'sizes': '96x96',
+        'size': '96x96'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-128x128.png',
+        'sizes': '128x128',
+        'size': '128x128'
+    },
+    {
+        'src': '/static/portal/img/icons/icon-144x144.png',
+        'sizes': '144x144',
+        'size': '144x144'
+    },
     {
         'src': '/static/portal/img/icons/icon-152x152.png',
         'sizes': '152x152',
