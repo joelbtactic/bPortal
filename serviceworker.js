@@ -7,8 +7,6 @@ var filesToCache = [
     'static/portal/img/icons/icon-128x128.png',
     'static/portal/img/icons/icon-144x144.png',
     'static/portal/img/icons/icon-152x152.png',
-    'static/portal/img/icons/icon-192x192.png',
-    'static/portal/img/icons/icon-384x384.png',
     'static/portal/img/icons/icon-512x512.png',
     '/static/portal/img/icons/splash-bportal-1242x2688.png',
     '/static/portal/img/icons/app-screenshot_476x744.png'
@@ -45,8 +43,6 @@ self.addEventListener("fetch", event => {
         event.respondWith(
             fetch(event.request)
                 .then(async response => {
-                    // const cache = await caches.open(staticCacheName);
-                    // cache.put(event.request, response.clone());
                     return response;
                 })
                 .catch(async () => {
