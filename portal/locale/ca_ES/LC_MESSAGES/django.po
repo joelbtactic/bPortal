@@ -744,3 +744,8 @@ msgstr "S'ha produït un error al recuperar el document."
 #: templates/portal/basepage.html:123
 msgid "You are currently offline. Some features may not be available."
 msgstr "Actualment estàs desconnectat. Algunes funcions poden no estar disponibles."
+
+#: templates/portal/basepage.html:137
+#: templates/portal/basepage.html:151
+msgid "Install App"
+msgstr "Instal·lar App"

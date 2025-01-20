@@ -39,7 +39,10 @@ h6 {
   overflow-wrap: break-word; /* For modern browsers */
 }
 
-
+.offcanvas-body div.offcanvas-header {
+  --bs-offcanvas-padding-x: 0rem !important;
+  --bs-offcanvas-padding-y: 0rem !important;
+}
 
 /* For screens that are 601px wide or more */
 @media screen and (min-width: 601px) {
