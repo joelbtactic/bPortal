@@ -171,28 +171,21 @@
     const installButtons = document.querySelectorAll('#installAppButton');
 
     let deferredPrompt = null;
-    let promptUsed = false;
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        promptUsed = false;
+      e.preventDefault();
+      deferredPrompt = e;
+      installButtons.forEach((button) => (button.style.display = 'inline-block'));
+    });
 
-        installButtons.forEach((installButton) => {
-            installButton.style.display = 'inline-block';
-
-            installButton.addEventListener('click', async () => {
-                if (deferredPrompt && !promptUsed) {
-                    promptUsed = true;
-
-                    await deferredPrompt.prompt();
-
-                    const { outcome } = await deferredPrompt.userChoice;
-
-                    deferredPrompt = null;
-                }
-            });
-        });
+    installButtons.forEach((installButton) => {
+      installButton.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          await deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+        }
+      });
     });
 
     function checkIfInstalled() {
