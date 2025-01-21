@@ -10,5 +10,4 @@ Finally specify the portal URL on `Joomla URL` field. For example, `https://port
 Now you can create new accounts going to `Contacts` module, selecting a contact and clicking on `Create Portal User` user.
 
 ## Minimal SuiteCRM version
-* `v7.11.7`
-* `v7.10.19`
+* `v7.14.5`
